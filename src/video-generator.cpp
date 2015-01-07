@@ -286,7 +286,7 @@ namespace ndn {
     Producer_Need pro_video;
     pthread_t thread_video; 
     int rc_video;
-    pro_video.filename = filename;
+    pro_video.filename = "/ndn/edu/ucla" + filename;
     pro_video.sink = sink.video;
     pro_video.name = "video";
     rc_video = pthread_create(&thread_video, NULL, produce_thread , (void *)&pro_video);
@@ -297,7 +297,7 @@ namespace ndn {
     Producer_Need pro_audio;
     pthread_t thread_audio; 
     int rc_audio;
-    pro_audio.filename = filename;
+    pro_audio.filename = "/ndn/edu/ucla" + filename;
     pro_audio.sink = sink.audio;
     pro_audio.name = "audio";
     rc_audio = pthread_create(&thread_audio, NULL, produce_thread , (void *)&pro_audio);

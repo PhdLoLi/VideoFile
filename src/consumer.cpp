@@ -16,7 +16,7 @@ namespace ndn {
   {
     try {
   
-  		std::string filename = "/Users/Lijing/Movies/";
+  		std::string filename = "/ndn/edu/ucla/Users/Lijing/Movies/";
   		if(argc >=2 )
   			filename += argv[1];
   		else
