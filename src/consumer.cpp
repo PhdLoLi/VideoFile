@@ -16,11 +16,11 @@ namespace ndn {
   {
     try {
   
-  		std::string filename = "/ndn/edu/ucla/Users/Lijing/Movies/";
+  		std::string filename = "/ndn/edu/ucla";
   		if(argc >=2 )
   			filename += argv[1];
   		else
-  			filename += "duoyan.mp4";
+  			filename += "/Users/Lijing/Movies/duoyan.mp4";
 //      filename = "/Capture";
       std::cout<<filename<<std::endl;
 

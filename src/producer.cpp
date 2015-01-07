@@ -17,13 +17,13 @@ namespace ndn {
   {
     try {
       
-  		std::string filename = "/Users/Lijing/Movies/";
+  		std::string filename;
       VideoGenerator generator;
 
   		if (argc >= 2)
-  			filename += argv[1];
+  			filename = argv[1];
   		else
-  			filename += "duoyan.mp4";
+        filename = "/Users/Lijing/Movies/duoyan.mp4";
   
      
       /* streaminfoSampleProducer */
