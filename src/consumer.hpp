@@ -27,13 +27,13 @@ public:
     , m_isRunning(false)
     , m_validator(m_face, ndn::ndns::Validator::DEFAULT_CONFIG_PATH + "/" + "validator-videoplayer.conf")
   {
-    // m_face.processEvents();
   };
 
   bool
   onPacket(Data& data)
   {
     if (m_enable) {
+      m_hasError = false;
       m_isRunning = true;
       m_validator.validate(data,
                      bind(&Verificator::onDataValidated, this, _1),
@@ -46,12 +46,8 @@ public:
        catch (std::exception& e) {
          std::cout << "Face fails to process events: " << e.what() << std::endl;
        }
-//      while (m_isRunning) {
-//        boost::this_thread::sleep(boost::posix_time::seconds(1));
-//      }
-      std::cout << " ************* out of running **************" << std::endl;
-        //boost::this_thread::sleep(boost::posix_time::seconds(1));
-      return true;
+
+      return m_hasError;
     }
     else
       return true;
@@ -68,6 +64,7 @@ public:
   {
     std::cout << " * final data pass verification" << std::endl;
     m_isRunning = false;
+    m_hasError = false;
   }
 
   void
