@@ -21,9 +21,9 @@ def configure(conf):
 
     conf.check_cfg(package='libndn-cxx', args=['--cflags', '--libs'],
                    uselib_store='NDN_CXX', mandatory=True)
-		
-    conf.check_cfg(package='gstreamer-1.0', args=['--cflags', '--libs'], 
-         uselib_store='GSTREAMER', mandatory=True) 
+
+    conf.check_cfg(package='gstreamer-1.0', args=['--cflags', '--libs'],
+         uselib_store='GSTREAMER', mandatory=True)
 
     conf.env.LIB_PTHREAD = 'pthread'
 
@@ -46,7 +46,6 @@ def configure(conf):
         pass
 
     conf.define('DEFAULT_CONFIG_FILE', '%s/ndn/next-ndnvideo.conf' % conf.env['SYSCONFDIR'])
-
     conf.write_config_header('src/config.hpp')
 
 def build(bld):
@@ -59,7 +58,7 @@ def build(bld):
 #        includes="src",
 #        export_includes="src",
 #        )
-  
+
     bld(target="producer_e",
         features=["cxx", "cxxprogram"],
         source= "src/producer_e.cpp src/producer-callback.cpp",
@@ -83,13 +82,13 @@ def build(bld):
         source= "src/consumer_e.cpp src/consumer-callback.cpp src/video-player.cpp",
         use='GSTREAMER BOOST NDN_CXX PTHREAD',
         )
-      
+
     bld(target="consumer",
         features=["cxx", "cxxprogram"],
-        source= "src/consumer.cpp src/video-player.cpp src/consumer-callback.cpp",
+        source= "src/consumer.cpp src/video-player.cpp src/consumer-callback.cpp src/validator.cpp",
         use='GSTREAMER BOOST NDN_CXX PTHREAD',
         )
-      
+
     bld(target="file_con",
         features=["cxx", "cxxprogram"],
         source= "src/file_con.cpp src/video-player.cpp src/consumer-callback.cpp",
