@@ -142,7 +142,7 @@ private:
       {
         std::cout << "I'm video~ "<<std::endl;
         sampleProducer->setContextOption(SND_BUF_SIZE,100000);
-        //          sampleProducer->setContextOption(EMBEDDED_MANIFESTS, true);
+        sampleProducer->setContextOption(EMBEDDED_MANIFESTS, true);
       }else
       {
         sampleProducer->setContextOption(SND_BUF_SIZE,100000);
