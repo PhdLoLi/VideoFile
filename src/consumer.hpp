@@ -47,7 +47,7 @@ public:
          std::cout << "Face fails to process events: " << e.what() << std::endl;
        }
 
-      return m_hasError;
+      return !m_hasError;
     }
     else
       return true;
