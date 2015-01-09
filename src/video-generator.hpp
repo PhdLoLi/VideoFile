@@ -23,7 +23,8 @@
 
 namespace ndn {
 // Additional nested namespace could be used to prevent/limit name contentions
-#define IDENTITY_NAME "/ndn/edu"
+//#define IDENTITY_NAME "/ndn/edu"
+#define IDENTITY_NAME "/ndn/edu/ucla/shock"
 //#define IDENTITY_NAME "/Lijing/Wang"
 class Signer
 {
