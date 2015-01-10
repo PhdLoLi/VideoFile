@@ -16,7 +16,7 @@
 
 namespace ndn{
 
-#define IDENTITY_NAME "/ndn/edu/ucla/shock"
+#define IDENTITY_NAME "/ndn/edu/ucla/bob"
 
 class Verificator
 {
