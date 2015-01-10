@@ -15,10 +15,10 @@ namespace ndn {
   main(int argc, char** argv)
   {
     try {
-  
-  		std::string filename = "/ndn/edu/ucla";
+
+  		std::string filename = IDENTITY_NAME;
   		if(argc >=2 )
-  			filename += argv[1];
+  			filename = Name(IDENTITY_NAME).append(argv[1]).toUri();
   		else
   			filename += "/Users/Lijing/Movies/duoyan.mp4";
 //      filename = "/Capture";
@@ -29,9 +29,9 @@ namespace ndn {
       Name videoinfoName(filename + "/video/streaminfo");
       Consumer* videoinfoConsumer = new Consumer(videoinfoName, RELIABLE, DATAGRAM );
       videoinfoConsumer->setContextOption(MUST_BE_FRESH_S, true);
-      videoinfoConsumer->setContextOption(INTEREST_LEAVE_CNTX, 
+      videoinfoConsumer->setContextOption(INTEREST_LEAVE_CNTX,
         (InterestCallback)bind(&ConsumerCallback::processLeavingInterest, &cb_consumer, _1));
-      videoinfoConsumer->setContextOption(CONTENT_RETRIEVED, 
+      videoinfoConsumer->setContextOption(CONTENT_RETRIEVED,
         (ContentCallback)bind(&ConsumerCallback::processStreaminfo, &cb_consumer, _1, _2));
 
       videoinfoConsumer->consume(Name());
@@ -39,16 +39,16 @@ namespace ndn {
       Name audioinfoName(filename + "/audio/streaminfo");
       Consumer* audioinfoConsumer = new Consumer(audioinfoName, RELIABLE, DATAGRAM );
       audioinfoConsumer->setContextOption(MUST_BE_FRESH_S, true);
-      audioinfoConsumer->setContextOption(INTEREST_LEAVE_CNTX, 
+      audioinfoConsumer->setContextOption(INTEREST_LEAVE_CNTX,
         (InterestCallback)bind(&ConsumerCallback::processLeavingInterest, &cb_consumer, _1));
-      audioinfoConsumer->setContextOption(CONTENT_RETRIEVED, 
+      audioinfoConsumer->setContextOption(CONTENT_RETRIEVED,
         (ContentCallback)bind(&ConsumerCallback::processStreaminfoAudio, &cb_consumer, _1, _2));
 
       audioinfoConsumer->consume(Name());
 
       sleep(1); // because consume() is non-blocking
       std::cout << "consume whole start!" <<std::endl;
-/*      
+/*
       Verificator* verificator = new Verificator();
       Name videoName(filename + "/video/content");
 
@@ -59,21 +59,21 @@ namespace ndn {
      // there is no need for other callback now
 //      videoConsumer->setContextOption(DATA_TO_VERIFY,
 //                      (DataVerificationCallback)bind(&Verificator::onPacket, verificator, _1));
-      videoConsumer->setContextOption(CONTENT_RETRIEVED, 
+      videoConsumer->setContextOption(CONTENT_RETRIEVED,
                                 (ContentCallback)bind(&ConsumerCallback::processPayload, &cb_consumer, _1, _2));
   		videoConsumer->setContextOption(CONTENT_RETRIEVAL_SIZE, 1024*1024);
 
 //      videoConsumer->setContextOption(MIN_WINDOW_SIZE, 1);
 //      videoConsumer->setContextOption(MAX_WINDOW_SIZE, 8);
 //      videoConsumer->setContextOption(INTEREST_RETX,0); //Retransmitted Attempted Time.
-      videoConsumer->setContextOption(INTEREST_LEAVE_CNTX, 
+      videoConsumer->setContextOption(INTEREST_LEAVE_CNTX,
                                 (InterestCallback)bind(&ConsumerCallback::processLeavingInterest, &cb_consumer, _1));
-    
-      videoConsumer->setContextOption(INTEREST_RETRANSMIT, 
+
+      videoConsumer->setContextOption(INTEREST_RETRANSMIT,
                                 (InterestCallback)bind(&ConsumerCallback::onRetx, &cb_consumer, _1));
-      videoConsumer->setContextOption(DATA_ENTER_CNTX, 
+      videoConsumer->setContextOption(DATA_ENTER_CNTX,
                                 (DataCallback)bind(&ConsumerCallback::processData, &cb_consumer, _1));
- 
+
 //	    videoConsumer->setContextOption(SND_BUF_SIZE, 1024*1024*5);
 //    	videoConsumer->setContextOption(RCV_BUF_SIZE, 1024*1024*4);
 //  		videoConsumer->setContextOption(CONTENT_CHUNK_SIZE, 1024*1024*10);
@@ -88,14 +88,14 @@ namespace ndn {
 //      audioConsumer->setContextOption(INTEREST_RETX,0); //Retransmitted Attempted Time.
 //      audioConsumer->setContextOption(DATA_TO_VERIFY,
 //                      (DataVerificationCallback)bind(&Verificator::onPacket, verificator, _1));
-      audioConsumer->setContextOption(CONTENT_RETRIEVED, 
+      audioConsumer->setContextOption(CONTENT_RETRIEVED,
                                 (ContentCallback)bind(&ConsumerCallback::processPayloadAudio, &cb_consumer, _1, _2));
 
-      audioConsumer->setContextOption(INTEREST_LEAVE_CNTX, 
+      audioConsumer->setContextOption(INTEREST_LEAVE_CNTX,
                                 (InterestCallback)bind(&ConsumerCallback::processLeavingInterest, &cb_consumer, _1));
-      audioConsumer->setContextOption(INTEREST_RETRANSMIT, 
+      audioConsumer->setContextOption(INTEREST_RETRANSMIT,
                                 (InterestCallback)bind(&ConsumerCallback::onRetx, &cb_consumer, _1));
-      audioConsumer->setContextOption(DATA_ENTER_CNTX, 
+      audioConsumer->setContextOption(DATA_ENTER_CNTX,
                                 (DataCallback)bind(&ConsumerCallback::processData, &cb_consumer, _1));
       */
       time_t time_start_0 = std::time(0);
@@ -106,7 +106,7 @@ namespace ndn {
       audioData.filename = filename;
       audioData.name = "audio";
       audioData.cb = &cb_consumer ;
-      pthread_t thread_audio; 
+      pthread_t thread_audio;
       rc_audio = pthread_create(&thread_audio, NULL, consume_thread , (void *)&audioData);
 
       int rc_video;
@@ -114,7 +114,7 @@ namespace ndn {
       videoData.filename = filename;
       videoData.name = "video";
       videoData.cb = &cb_consumer ;
-      pthread_t thread_video; 
+      pthread_t thread_video;
       rc_video = pthread_create(&thread_video, NULL, consume_thread , (void *)&videoData);
 
 //      cb_consumer.player.consume_whole(videoConsumer, audioConsumer);
@@ -124,7 +124,7 @@ namespace ndn {
       std::cout << seconds << " seconds have passed" << std::endl;
 
       sleep(3000); // because consume() is non-blocking
-      
+
     }
     catch(std::exception& e) {
       std::cerr << "ERROR: " << e.what() << std::endl;
