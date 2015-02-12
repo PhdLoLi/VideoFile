@@ -128,7 +128,7 @@ private:
                       (ConstInterestCallback)bind(&ProducerCallback::processIncomingInterest, &streaminfoCB, _1));
         streaminfoProducer->setContextOption(DATA_LEAVE_CNTX,
             (ConstDataCallback)bind(&ProducerCallback::processOutgoingData, &streaminfoCB, _1));
-        streaminfoProducer->setup();
+        streaminfoProducer->attach();
 
         Signer signer;
         Name videoName_content(pro->filename + "/" + pro->name + "/content");
@@ -152,7 +152,7 @@ private:
             (ConstDataCallback)bind(&ProducerCallback::processOutgoingData, &sampleCB, _1));
         sampleProducer->setContextOption(INTEREST_TO_PROCESS,
                           (ConstInterestCallback)bind(&ProducerCallback::processInterest, &sampleCB, _1));
-        sampleProducer->setup();          
+        sampleProducer->attach();          
         
         do {
           g_signal_emit_by_name (pro->sink, "pull-sample", &sample);

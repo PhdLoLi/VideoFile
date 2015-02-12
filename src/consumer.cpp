@@ -27,7 +27,7 @@ namespace ndn {
       ConsumerCallback cb_consumer;
 
       Name videoinfoName(filename + "/video/streaminfo");
-      Consumer* videoinfoConsumer = new Consumer(videoinfoName, RELIABLE, DATAGRAM );
+      Consumer* videoinfoConsumer = new Consumer(videoinfoName, SDR);
       videoinfoConsumer->setContextOption(MUST_BE_FRESH_S, true);
       videoinfoConsumer->setContextOption(INTEREST_LEAVE_CNTX, 
         (InterestCallback)bind(&ConsumerCallback::processLeavingInterest, &cb_consumer, _1));
@@ -37,7 +37,7 @@ namespace ndn {
       videoinfoConsumer->consume(Name());
 
       Name audioinfoName(filename + "/audio/streaminfo");
-      Consumer* audioinfoConsumer = new Consumer(audioinfoName, RELIABLE, DATAGRAM );
+      Consumer* audioinfoConsumer = new Consumer(audioinfoName, SDR);
       audioinfoConsumer->setContextOption(MUST_BE_FRESH_S, true);
       audioinfoConsumer->setContextOption(INTEREST_LEAVE_CNTX, 
         (InterestCallback)bind(&ConsumerCallback::processLeavingInterest, &cb_consumer, _1));

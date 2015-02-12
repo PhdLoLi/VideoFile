@@ -64,7 +64,7 @@ namespace ndn{
 
     Name sampleName(con->filename + "/" + con->name + "/" + "content");
 
-    Consumer* sampleConsumer = new Consumer(sampleName, RELIABLE, SEQUENCE);
+    Consumer* sampleConsumer = new Consumer(sampleName, RDR);
     if(con->name == "video")
     {
 //      sampleConsumer->setContextOption(EMBEDDED_MANIFESTS, true);

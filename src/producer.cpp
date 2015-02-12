@@ -31,7 +31,7 @@ namespace ndn {
 //      cb_producer.setProducer(audioinfoProducer); // needed for some callback functionality
 //      audioinfoProducer->setContextOption(DATA_LEAVE_CNTX,
 //          (ConstDataCallback)bind(&ProducerCallback::processOutgoingData, &cb_producer, _1));
-//      audioinfoProducer->setup();
+//      audioinfoProducer->attach();
 //
 //      
 //      Producer* sampleProducer = new Producer(videoName2);
@@ -43,7 +43,7 @@ namespace ndn {
 //          (ConstDataCallback)bind(&ProducerCallback::processOutgoingData, &cb_producer, _1));
 //      sampleProducer->setContextOption(INTEREST_ENTER_CNTX,
 //                        (ConstInterestCallback)bind(&ProducerCallback::processIncomingInterest, &cb_producer, _1));
-//      sampleProducer->setup();
+//      sampleProducer->attach();
 
       generator.h264_generate_whole(filename);
 //      filename = "/Capture";
@@ -61,7 +61,7 @@ namespace ndn {
 //      Name wholeSuffix;
 //      frameProducer->produce(wholeSuffix, (uint8_t*)buffer, size);
 
-      sleep(30000); // because setup() is non-blocking
+      sleep(30000); // because attach() is non-blocking
       
       std::cout << "HERE!!" << std::endl;
 
