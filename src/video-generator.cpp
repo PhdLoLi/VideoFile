@@ -237,7 +237,7 @@ namespace ndn {
 
 /* Generate frames and samples from MP4 File */
   void 
-  VideoGenerator::h264_generate_whole (std::string filename)
+  VideoGenerator::h264_generate_whole (std::string prefix, std::string filepath, std::string filename)
   {
     GstElement *pipeline, *source, *demuxer; 
     GstElement_Duo queue, parser, sink;
@@ -268,7 +268,7 @@ namespace ndn {
 
     /* Set up the pipeline */ 
     /* we set the input filename to the source element */ 
-    g_object_set (G_OBJECT (source), "location", filename.c_str() , NULL); 
+    g_object_set (G_OBJECT (source), "location", (filepath + "/" + filename).c_str() , NULL); 
     /* we add all elements into the pipeline */ 
     gst_bin_add_many (GST_BIN (pipeline), source, demuxer, queue.audio, queue.video, parser.video, sink.video, parser.audio, sink.audio, NULL); 
     /* we link the elements together */ 
@@ -286,7 +286,7 @@ namespace ndn {
     Producer_Need pro_video;
     pthread_t thread_video; 
     int rc_video;
-    pro_video.filename = "/ndn/edu/ucla" + filename;
+    pro_video.filename = prefix + filename;
     pro_video.sink = sink.video;
     pro_video.name = "video";
     rc_video = pthread_create(&thread_video, NULL, produce_thread , (void *)&pro_video);
@@ -297,7 +297,7 @@ namespace ndn {
     Producer_Need pro_audio;
     pthread_t thread_audio; 
     int rc_audio;
-    pro_audio.filename = "/ndn/edu/ucla" + filename;
+    pro_audio.filename = prefix + filename;
     pro_audio.sink = sink.audio;
     pro_audio.name = "audio";
     rc_audio = pthread_create(&thread_audio, NULL, produce_thread , (void *)&pro_audio);

@@ -24,37 +24,41 @@ namespace ndn {
     ConsumerCallback();
     
     void
-    processPayload(const uint8_t* buffer, size_t bufferSize);
+    processPayload(Consumer& con, const uint8_t* buffer, size_t bufferSize);
     
     void
-    processStreaminfo(const uint8_t* buffer, size_t bufferSize);
+    processStreaminfo(Consumer& con, const uint8_t* buffer, size_t bufferSize);
 
     void
-    processPayloadAudio(const uint8_t* buffer, size_t bufferSize);
+    processPayloadAudio(Consumer& con, const uint8_t* buffer, size_t bufferSize);
     
     void
-    processStreaminfoAudio(const uint8_t* buffer, size_t bufferSize);
+    processStreaminfoAudio(Consumer& con, const uint8_t* buffer, size_t bufferSize);
     
     void
-    processData(Data& data);
+    processData(Consumer& con, const Data& data);
     
     bool
-    verifyData(Data& data);
+    verifyData(Consumer& con, Data& data);
     
     void
-    processConstData(const Data& data);
+    processConstData(Consumer& con, const Data& data);
     
     void
-    processLeavingInterest(Interest& interest);
+    processLeavingInterest(Consumer& con, Interest& interest);
     
     void
-    onRetx(Interest& interest)
+    processList(Consumer& con, const uint8_t* buffer, size_t bufferSize);
+
+
+    void
+    onRetx(Consumer& con, Interest& interest)
     {
       std::cout << "Retransmitted " << interest.getName() << std::endl;
     }
 
     void
-    processFile(const uint8_t* buffer, size_t bufferSize)
+    processFile(Consumer& con, const uint8_t* buffer, size_t bufferSize)
     {
       std::ofstream filestr;
     	// binary open
@@ -64,6 +68,7 @@ namespace ndn {
       filestr.close();
  
     }
+
     VideoPlayer player;
   };
 

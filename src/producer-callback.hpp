@@ -22,26 +22,35 @@ namespace ndn {
     setSampleNumber(size_t* n);
 
     void
-    processConstData(const Data& data);
+    processConstData(Producer& pro, const Data& data);
     
     void
-    processInterest(const Interest& interest);
+    processInterest(Producer& pro, const Interest& interest);
     
     void
-    processOutgoingData(const Data& data)
+    processOutgoingData(Producer& pro, const Data& data)
     {
       std::cout << "OutgoingData " << data.getName() << std::endl;
 //      std::cout << data.getFinalBlockId() << std::endl;
     }
     void
-    processIncomingInterest(const Interest& interest);
+    processIncomingInterest(Producer& pro, const Interest& interest);
     
     bool
     verifyInterest(Interest& interest);
     
     void
-    processConstInterest(const Interest& interest);
+    processConstInterest(Producer& pro, const Interest& interest);
+
+    void
+    generateList(Producer& pro, const Interest& interest);
+    
+    std::string
+    getFilename();
   
+    std::string filepath;
+    std::string prefix;
+
   private:
     Producer* m_producer;
     size_t* m_curnum;

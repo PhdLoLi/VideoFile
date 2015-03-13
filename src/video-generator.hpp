@@ -58,7 +58,7 @@ private:
       void 
       h264_generate_frames (std::string filename, Producer * producer);
       void 
-      h264_generate_whole (std::string filename);
+      h264_generate_whole (std::string prefix, std::string filepath, std::string filename);
       void 
       h264_generate_capture (std::string filename);
       void
@@ -125,9 +125,9 @@ private:
         streaminfoProducer = new Producer(videoName_streaminfo);
         streaminfoCB.setProducer(streaminfoProducer); // needed for some callback functionality
         streaminfoProducer->setContextOption(INTEREST_ENTER_CNTX,
-                      (ConstInterestCallback)bind(&ProducerCallback::processIncomingInterest, &streaminfoCB, _1));
+                      (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &streaminfoCB, _1, _2));
         streaminfoProducer->setContextOption(DATA_LEAVE_CNTX,
-            (ConstDataCallback)bind(&ProducerCallback::processOutgoingData, &streaminfoCB, _1));
+            (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &streaminfoCB, _1, _2));
         streaminfoProducer->attach();
 
         Signer signer;
@@ -147,11 +147,11 @@ private:
 //        sampleProducer->setContextOption(DATA_TO_SECURE,
 //                        (DataCallback)bind(&Signer::onPacket, &signer, _1));
         sampleProducer->setContextOption(INTEREST_ENTER_CNTX,
-                        (ConstInterestCallback)bind(&ProducerCallback::processIncomingInterest, &sampleCB, _1));
+                        (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &sampleCB, _1, _2));
         sampleProducer->setContextOption(DATA_LEAVE_CNTX,
-            (ConstDataCallback)bind(&ProducerCallback::processOutgoingData, &sampleCB, _1));
-        sampleProducer->setContextOption(INTEREST_TO_PROCESS,
-                          (ConstInterestCallback)bind(&ProducerCallback::processInterest, &sampleCB, _1));
+            (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &sampleCB, _1, _2));
+        sampleProducer->setContextOption(CACHE_MISS,
+                          (ProducerInterestCallback)bind(&ProducerCallback::processInterest, &sampleCB, _1, _2));
         sampleProducer->attach();          
         
         do {

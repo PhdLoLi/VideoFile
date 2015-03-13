@@ -68,40 +68,49 @@ namespace ndn{
     if(con->name == "video")
     {
 //      sampleConsumer->setContextOption(EMBEDDED_MANIFESTS, true);
-      sampleConsumer->setContextOption(CONTENT_RETRIEVAL_SIZE, 1024*1024);
+//      sampleConsumer->setContextOption(CONTENT_RETRIEVAL_SIZE, 1024*1024);
+//      sampleConsumer->setContextOption(MIN_WINDOW_SIZE, 8);
       sampleConsumer->setContextOption(CONTENT_RETRIEVED, 
-                          (ContentCallback)bind(&ConsumerCallback::processPayload, con->cb, _1, _2));
+                          (ConsumerContentCallback)bind(&ConsumerCallback::processPayload, con->cb, _1, _2, _3));
+
+      ndn::shared_ptr<Face> f1;
+      sampleConsumer->getContextOption(FACE, f1);
+      std::cout << " Video Face = " << f1 << std::endl;
 
       end = 1000000;
-      sleeptime = 100;
+      sleeptime = 1000000;
     }else
     {
       sampleConsumer->setContextOption(CONTENT_RETRIEVED, 
-                          (ContentCallback)bind(&ConsumerCallback::processPayloadAudio, con->cb, _1, _2));
+                          (ConsumerContentCallback)bind(&ConsumerCallback::processPayloadAudio, con->cb, _1, _2, _3));
+      ndn::shared_ptr<Face> f2;
+      sampleConsumer->getContextOption(FACE, f2);
+      std::cout << " Audio Face = " << f2 << std::endl;
       end = 1000000;
       sleeptime = 0;
     }
         
     sampleConsumer->setContextOption(MUST_BE_FRESH_S, true);
     sampleConsumer->setContextOption(INTEREST_LIFETIME, 200);
+
 //    sampleConsumer->setContextOption(INTEREST_RETX,5); //Retransmitted Attempted Time.
    // there is no need for other callback now
 //    sampleConsumer->setContextOption(DATA_TO_VERIFY,
 //                    (DataVerificationCallback)bind(&Verificator::onPacket, verificator, _1));
 //    sampleConsumer->setContextOption(MIN_WINDOW_SIZE, 1);
     sampleConsumer->setContextOption(INTEREST_LEAVE_CNTX, 
-                              (InterestCallback)bind(&ConsumerCallback::processLeavingInterest, con->cb, _1));
+                              (ConsumerInterestCallback)bind(&ConsumerCallback::processLeavingInterest, con->cb, _1, _2));
     sampleConsumer->setContextOption(INTEREST_RETRANSMIT, 
-                              (InterestCallback)bind(&ConsumerCallback::onRetx, con->cb, _1));
+                              (ConsumerInterestCallback)bind(&ConsumerCallback::onRetx, con->cb, _1, _2));
     sampleConsumer->setContextOption(DATA_ENTER_CNTX, 
-                              (DataCallback)bind(&ConsumerCallback::processData, con->cb, _1));
+                              (ConsumerDataCallback)bind(&ConsumerCallback::processData, con->cb, _1, _2));
 
     
     for (int i=0; i<end; i++)
     { 
       Name sampleSuffix(std::to_string(i));
       sampleConsumer->consume(sampleSuffix);
-      usleep(sleeptime);
+ //     usleep(sleeptime);
     }
     pthread_exit(NULL);
   }

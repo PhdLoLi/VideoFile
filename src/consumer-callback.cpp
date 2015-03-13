@@ -28,7 +28,7 @@ namespace ndn {
   }
   
   void
-  ConsumerCallback::processPayload(const uint8_t* buffer, size_t bufferSize)
+  ConsumerCallback::processPayload(Consumer& con, const uint8_t* buffer, size_t bufferSize)
   {
     std::cout << "video times processPayload " << std::dec << times_video <<std::endl;
 //    std::cout << "video bufferSize " << bufferSize <<std::endl;
@@ -39,7 +39,7 @@ namespace ndn {
   }
 
   void
-  ConsumerCallback::processPayloadAudio(const uint8_t* buffer, size_t bufferSize)
+  ConsumerCallback::processPayloadAudio(Consumer& con, const uint8_t* buffer, size_t bufferSize)
   {
     std::cout << "audio times processPayload " << std::dec << times_audio <<std::endl;
 //    std::cout << "audio bufferSize " << bufferSize <<std::endl;
@@ -50,7 +50,7 @@ namespace ndn {
   }
   
   void
-  ConsumerCallback::processStreaminfo(const uint8_t* buffer, size_t bufferSize)
+  ConsumerCallback::processStreaminfo(Consumer& con, const uint8_t* buffer, size_t bufferSize)
   {
     std::string streaminfo((char*) buffer);
   //  long fileLength = std::stol(content);
@@ -63,7 +63,7 @@ namespace ndn {
   }
 
   void
-  ConsumerCallback::processStreaminfoAudio(const uint8_t* buffer, size_t bufferSize)
+  ConsumerCallback::processStreaminfoAudio(Consumer& con, const uint8_t* buffer, size_t bufferSize)
   {
     std::string streaminfo((char*) buffer);
     std::cout << "processStreaminfo_audio " << streaminfo << std::endl;
@@ -71,25 +71,31 @@ namespace ndn {
   }
 
   void
-  ConsumerCallback::processData(Data& data)
+  ConsumerCallback::processData(Consumer& con, const Data& data)
   {
     std::cout << "DATA IN CNTX Name: " << data.getName() << "FinalBlockId: " <<data.getFinalBlockId() << std::endl;
   }
   
   bool
-  ConsumerCallback::verifyData(Data& data)
+  ConsumerCallback::verifyData(Consumer& con, Data& data)
   {
     return true;
   }
   
   void
-  ConsumerCallback::processConstData(const Data& data)
+  ConsumerCallback::processConstData(Consumer& con, const Data& data)
   {}
   
   void
-  ConsumerCallback::processLeavingInterest(Interest& interest)
+  ConsumerCallback::processLeavingInterest(Consumer& con, Interest& interest)
   {
     std::cout << "LEAVES " << interest.toUri() << std::endl;
 //    std::cout << "LEAVES name " << interest.getName() << std::endl;
   }  
+
+  void
+  ConsumerCallback::processList(Consumer& con, const uint8_t* buffer, size_t bufferSize)
+  {
+    std::cout << "Video List: \n" << buffer << std::endl;
+  }
 } // namespace ndn

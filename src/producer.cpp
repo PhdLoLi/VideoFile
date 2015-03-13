@@ -5,7 +5,8 @@
  * @author Lijing Wang <phdloli@ucla.edu>
  */
 
-#include "video-generator.hpp" 
+#include "video-generator.hpp"
+#include <dirent.h>
 //#include <iostream>
 // Enclosing code in ndn simplifies coding (can also use `using namespace ndn`)
 namespace ndn {
@@ -17,50 +18,99 @@ namespace ndn {
   {
     try {
       
-  		std::string filename;
-      VideoGenerator generator;
+      Producer *listProducer;
+      ProducerCallback listCB;
+      std::string prefix = "/ndn/ucla/recordvideo/";
 
-  		if (argc >= 2)
-  			filename = argv[1];
-  		else
-        filename = "/Users/Lijing/Movies/duoyan.mp4";
-  
-     
-      /* streaminfoSampleProducer */
-//      Producer* audioinfoProducer = new Producer(videoName);
-//      cb_producer.setProducer(audioinfoProducer); // needed for some callback functionality
-//      audioinfoProducer->setContextOption(DATA_LEAVE_CNTX,
-//          (ConstDataCallback)bind(&ProducerCallback::processOutgoingData, &cb_producer, _1));
-//      audioinfoProducer->attach();
+      listCB.filepath = "/Users/Lijing/Test";
+      listCB.prefix = prefix;
+
+      listProducer = new Producer(prefix + "list");
+      listCB.setProducer(listProducer); // needed for some callback functionality
+//      listProducer->setContextOption(INTEREST_ENTER_CNTX,
+//                    (ProducerInterestCallback)bind(&ProducerCallback::generateList, &listCB, _1, _2));
+      listProducer->setContextOption(DATA_LEAVE_CNTX,
+                    (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &listCB, _1, _2));
+      listProducer->setContextOption(CACHE_MISS,
+                    (ProducerInterestCallback)bind(&ProducerCallback::generateList, &listCB, _1, _2));
+
+//      std::string filelist;
+//      filelist = listCB.getFilename(); 
+      uint64_t timestamp = toUnixTimestamp(ndn::time::system_clock::now()).count();
+      std::string timestamp_str = std::to_string(timestamp);
+      std::cout << "Timestamp: " << timestamp_str << std::endl;
+      Name timeSuffix("all/" + timestamp_str);
+//      listProducer->produce(timeSuffix, (uint8_t *)filelist.c_str(), filelist.size());
+
+      listProducer->attach();
+
+ 
+//      /* VideoProducer Init */
+//      Producer *streaminfovideoProducer;
+//      Producer *samplevideoProducer;
+//      ProducerCallback streaminfovideoCB;
+//      ProducerCallback samplevideoCB;
 //
-//      
-//      Producer* sampleProducer = new Producer(videoName2);
-//      cb_producer.setProducer(sampleProducer); // needed for some callback functionality
-//      sampleProducer->setContextOption(DATA_TO_SECURE,
-//                      (DataCallback)bind(&Signer::onPacket, &signer, _1));
-//      sampleProducer->setContextOption(SND_BUF_SIZE,100000);
-//      sampleProducer->setContextOption(DATA_LEAVE_CNTX,
-//          (ConstDataCallback)bind(&ProducerCallback::processOutgoingData, &cb_producer, _1));
-//      sampleProducer->setContextOption(INTEREST_ENTER_CNTX,
-//                        (ConstInterestCallback)bind(&ProducerCallback::processIncomingInterest, &cb_producer, _1));
-//      sampleProducer->attach();
+//      Name videoName_streaminfo(prefix + "video/streaminfo");
+//      /* streaminfoFrameProducer */
+//      streaminfovideoProducer = new Producer(videoName_streaminfo);
+//      streaminfovideoCB.setProducer(streaminfovideoProducer); // needed for some callback functionality
+//      streaminfovideoProducer->setContextOption(INTEREST_ENTER_CNTX,
+//                    (ProducerInterestCallback)bind(&ProducerCallback:
+//      streaminfovideoProducer->setContextOption(DATA_LEAVE_CNTX,
+//          (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &streaminfovideoCB, _1, _2));
+//      streaminfovideoProducer->attach();
+//
+//      Signer signer;
+//      Name videoName_content(prefix + "video/content");
+//      samplevideoProducer = new Producer(videoName_content);
+//      samplevideoCB.setProducer(samplevideoProducer); // needed for some callback functionality
+//      samplevideoCB.setSampleNumber(&samplenumber);
+//
+////      sampleProducer->setContextOption(DATA_TO_SECURE,
+////                      (DataCallback)bind(&Signer::onPacket, &signer, _1));
+//      samplevideoProducer->setContextOption(INTEREST_ENTER_CNTX,
+//                      (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &samplevideoCB, _1, _2));
+//      samplevideoProducer->setContextOption(DATA_LEAVE_CNTX,
+//          (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &samplevideoCB, _1, _2));
+//      samplevideoProducer->setContextOption(CACHE_MISS,
+//                        (ProducerInterestCallback)bind(&ProducerCallback::processInterest, &samplevideoCB, _1, _2));
+//      samplevideoProducer->attach();          
+//
+//      /* AudioProducer Init */
+//      Producer *streaminfoaudioProducer;
+//      Producer *sampleaudioProducer;
+//      ProducerCallback streaminfoaudioCB;
+//      ProducerCallback sampleaudioCB;
+//
+//      Name audioName_streaminfo(prefix + "audio/streaminfo");
+//      /* streaminfoFrameProducer */
+//      streaminfoaudioProducer = new Producer(audioName_streaminfo);
+//      streaminfoaudioCB.setProducer(streaminfoaudioProducer); // needed for some callback functionality
+//      streaminfoaudioProducer->setContextOption(INTEREST_ENTER_CNTX,
+//                    (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &streaminfoaudioCB, _1, _2));
+//      streaminfoaudioProducer->setContextOption(DATA_LEAVE_CNTX,
+//          (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &streaminfoaudioCB, _1, _2));
+//      streaminfoaudioProducer->attach();
+//
+//      Name audioName_content(prefix + "audio/content");
+//      sampleaudioProducer = new Producer(audioName_content);
+//      sampleaudioCB.setProducer(sampleaudioProducer); // needed for some callback functionality
+//      sampleaudioCB.setSampleNumber(&samplenumber);
+//
+////      sampleProducer->setContextOption(DATA_TO_SECURE,
+////                      (DataCallback)bind(&Signer::onPacket, &signer, _1));
+//      sampleaudioProducer->setContextOption(INTEREST_ENTER_CNTX,
+//                      (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &sampleaudioCB, _1, _2));
+//      sampleaudioProducer->setContextOption(DATA_LEAVE_CNTX,
+//          (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &sampleaudioCB, _1, _2));
+//      sampleaudioProducer->setContextOption(CACHE_MISS,
+//                        (ProducerInterestCallback)bind(&ProducerCallback::processInterest, &sampleaudioCB, _1, _2));
+//      sampleaudioProducer->attach();          
 
-      generator.h264_generate_whole(filename);
-//      filename = "/Capture";
-//      generator.h264_generate_capture(filename);
-
+      
+//      generator.h264_generate_whole(filename);
       std::cout << "COOL~" << std::endl;
-
-//      generator.h264_generate_frames(filename, frameProducer);
-//      generator.playbin_generate_frames(filename, frameProducer);
-//      There is no need for callback now 
-//      ProducerCallback cb_producer;
-//      
-//      buffer = generator.generateVideoOnce(filename, size);
-//
-//      Name wholeSuffix;
-//      frameProducer->produce(wholeSuffix, (uint8_t*)buffer, size);
-
       sleep(30000); // because attach() is non-blocking
       
       std::cout << "HERE!!" << std::endl;
