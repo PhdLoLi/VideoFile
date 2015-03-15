@@ -78,6 +78,11 @@ def build(bld):
         use='GSTREAMER BOOST NDN_CXX PTHREAD',
         )
 
+    bld(target="repo_producer",
+        features=["cxx", "cxxprogram"],
+        source= "src/repo_producer.cpp src/video-generator.cpp src/producer-callback.cpp",
+        use='GSTREAMER BOOST NDN_CXX PTHREAD',
+        )
 #    bld(target="consumer_e",
 #        features=["cxx", "cxxprogram"],
 #        source= "src/consumer_e.cpp src/consumer-callback.cpp src/video-player.cpp",

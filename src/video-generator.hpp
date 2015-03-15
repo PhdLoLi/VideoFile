@@ -109,6 +109,7 @@ private:
         std::string streaminfo;
         GstBuffer *buffer;
         GstMapInfo map;
+        std::string repoPrefix = "/ndn/edu/ucla/repo";
 
         Producer *streaminfoProducer;
         Producer *sampleProducer;
@@ -128,7 +129,10 @@ private:
                       (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &streaminfoCB, _1, _2));
         streaminfoProducer->setContextOption(DATA_LEAVE_CNTX,
             (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &streaminfoCB, _1, _2));
-        streaminfoProducer->attach();
+
+        streaminfoProducer->setContextOption(REPO_PREFIX, repoPrefix);
+
+//        streaminfoProducer->attach();
 
         Signer signer;
         Name videoName_content(pro->filename + "/" + pro->name + "/content");
@@ -146,13 +150,16 @@ private:
         }
 //        sampleProducer->setContextOption(DATA_TO_SECURE,
 //                        (DataCallback)bind(&Signer::onPacket, &signer, _1));
+        
+        sampleProducer->setContextOption(REPO_PREFIX, repoPrefix);
+
         sampleProducer->setContextOption(INTEREST_ENTER_CNTX,
                         (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &sampleCB, _1, _2));
         sampleProducer->setContextOption(DATA_LEAVE_CNTX,
             (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &sampleCB, _1, _2));
         sampleProducer->setContextOption(CACHE_MISS,
                           (ProducerInterestCallback)bind(&ProducerCallback::processInterest, &sampleCB, _1, _2));
-        sampleProducer->attach();          
+//        sampleProducer->attach();          
         
         do {
           g_signal_emit_by_name (pro->sink, "pull-sample", &sample);

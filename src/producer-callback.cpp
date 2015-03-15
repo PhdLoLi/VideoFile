@@ -66,7 +66,7 @@ namespace ndn {
   void
   ProducerCallback::generateList(Producer& pro, const Interest& interest)
   {
-    std::cout << "Interest Enter under list: " << interest.getName() << std::endl;
+    std::cout << "Cache Miss of List " << interest.getName() << std::endl;
 
     std::string key = interest.getName().get(4).toUri();
     if(key == "all")
@@ -86,7 +86,7 @@ namespace ndn {
       VideoGenerator generator;
       std::string status = "DONE!";
       pro.produce(Name("file/"+videoFilename), (uint8_t *)status.c_str(), status.size());
-      generator.h264_generate_whole(prefix, filepath, videoFilename);
+//      generator.h264_generate_whole(prefix, filepath, videoFilename);
 
     }
   }

@@ -10,6 +10,8 @@
 #include <string>
 #include <pthread.h>
 #include <ctime>
+#include <boost/algorithm/string.hpp>
+#include <boost/thread/thread.hpp>
 
 // Enclosing code in ndn simplifies coding (can also use `using namespace ndn`)
 namespace ndn {
@@ -96,6 +98,17 @@ namespace ndn {
   void
   ConsumerCallback::processList(Consumer& con, const uint8_t* buffer, size_t bufferSize)
   {
-    std::cout << "Video List: \n" << buffer << std::endl;
+    std::cout << "Video List: " << std::endl;
+    std::vector<std::string> strs;
+    boost::split(strs, (char *&)buffer, boost::is_any_of("\n"));
+
+    for (int i=0; i<strs.size()-1; i++)
+    {
+      list.push_back(strs[i]);
+      std::cout << i << "  " << strs[i] << std::endl ;
+    }
+    boost::lock_guard<boost::mutex> lock(mut);
+    data_ready=true;
+    cond.notify_one();
   }
 } // namespace ndn

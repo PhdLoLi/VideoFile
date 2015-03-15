@@ -6,6 +6,7 @@
  */
 
 #include "consumer.hpp"
+#include <boost/thread/thread.hpp>
 
 // Enclosing code in ndn simplifies coding (can also use `using namespace ndn`)
 namespace ndn {
@@ -17,11 +18,12 @@ namespace ndn {
     try {
   
   		std::string prefix = "/ndn/ucla/recordvideo/";
-      std::string filename;
+      std::string filename ="";
       ConsumerCallback cb_consumer;
 
       Name listName(prefix + "list");
       Consumer* listConsumer = new Consumer(listName, SDR);
+      listConsumer->setContextOption(INTEREST_LIFETIME, 50);
       listConsumer->setContextOption(MUST_BE_FRESH_S, true);
       listConsumer->setContextOption(RIGHTMOST_CHILD_S, true);
       listConsumer->setContextOption(INTEREST_LEAVE_CNTX, 
@@ -32,22 +34,32 @@ namespace ndn {
         (ConsumerDataCallback)bind(&ConsumerCallback::processData, &cb_consumer, _1, _2));
   		if(argc < 2 )
       {
-
         listConsumer->consume(Name("all"));
+        boost::unique_lock<boost::mutex> lock(cb_consumer.mut);
+        while(!cb_consumer.data_ready)
+        {
+            cb_consumer.cond.wait(lock);
+        }
+  
+        int numberInput = 0;
+        std::cout << "Please Input the Video Number " <<std::endl;
+        std::cin >> numberInput;
+        while(std::cin.fail() || numberInput >= cb_consumer.list.size())
+        {
+          if(std::cin.fail())
+            std::cout << "Please Input a NUMBER "  <<std::endl;
+          else
+            std::cout << "Please Input a number <= " << cb_consumer.list.size() <<std::endl;
+          std::cin >> numberInput;
+        }
+  
+        filename = cb_consumer.list[numberInput];
+  
+      }else
+        filename = argv[1];
 
-        sleep(3000);
-        return 1;
-      }
-  		else
-      {
-  			filename = argv[1];
-        listConsumer->consume(Name("file/"+filename));
-        sleep(1);
-      }
-
-
-//      ConsumerCallback cb_consumer;
-
+      std::cout << "Asking For " << filename << std::endl;
+     
       Name videoinfoName(prefix + filename + "/video/streaminfo");
       Consumer* videoinfoConsumer = new Consumer(videoinfoName, SDR);
       videoinfoConsumer->setContextOption(MUST_BE_FRESH_S, true);

@@ -34,15 +34,20 @@ namespace ndn {
       listProducer->setContextOption(CACHE_MISS,
                     (ProducerInterestCallback)bind(&ProducerCallback::generateList, &listCB, _1, _2));
 
-//      std::string filelist;
-//      filelist = listCB.getFilename(); 
-      uint64_t timestamp = toUnixTimestamp(ndn::time::system_clock::now()).count();
-      std::string timestamp_str = std::to_string(timestamp);
-      std::cout << "Timestamp: " << timestamp_str << std::endl;
-      Name timeSuffix("all/" + timestamp_str);
-//      listProducer->produce(timeSuffix, (uint8_t *)filelist.c_str(), filelist.size());
+      std::string filelist;
 
       listProducer->attach();
+
+      while(1)
+      {
+        filelist = listCB.getFilename(); 
+        uint64_t timestamp = toUnixTimestamp(ndn::time::system_clock::now()).count();
+        std::string timestamp_str = std::to_string(timestamp);
+        std::cout << "Timestamp: " << timestamp_str << std::endl;
+        Name timeSuffix("all/" + timestamp_str);
+        listProducer->produce(timeSuffix, (uint8_t *)filelist.c_str(), filelist.size());
+        sleep(60);
+      }
 
  
 //      /* VideoProducer Init */

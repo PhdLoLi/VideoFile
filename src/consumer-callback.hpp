@@ -70,6 +70,10 @@ namespace ndn {
     }
 
     VideoPlayer player;
+    std::vector<std::string> list;
+    boost::condition_variable cond;
+    boost::mutex mut;
+    bool data_ready = 0;
   };
 
 } // namespace ndn
