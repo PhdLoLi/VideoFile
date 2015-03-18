@@ -12,10 +12,13 @@ Description
 
 NDN-based Pre-recorded Streaming Video Project using Consumer/Producer API. 
 
+
+-Producer
 There are a lots of pre-recorded video file inside the producer. 
 The repo\_producer will publish all the video files frame by frame into Repo-ng.
 The list\_producer will publish the latest playing list every minute. 
 
+-Consumer
 The consumer should first ask for the latest playing list, then chose one to play back. 
 
 Structure
@@ -42,12 +45,20 @@ Please, see the [INSTALL.md](INSTALL.md) for build instructions.
 
 Usage
 ----
-Terminal 1 for repo\_producer -- Publishing video & audio to Repo-ng
+- Terminal 1 for repo\_producer -- Publishing video & audio to Repo-ng
+<pre>
 $ .build/repo\_producer
-Terminal 2 for list\_producer -- Publishing playing list
+</pre>
+
+- Terminal 2 for list\_producer -- Publishing playing list
+<pre>
 $ .build/producer
-Terminal 3 -- Playing video & audio
+</pre>
+
+- Terminal 3 -- Playing video & audio
+<pre>
 $ .build/consumer
+</pre>
 
 License
 ---
