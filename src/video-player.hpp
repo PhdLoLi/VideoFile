@@ -92,7 +92,7 @@ namespace ndn {
           return TRUE; 
         }
         
-        std::cout << "Readrate !" << app->rate << std::endl;
+//        std::cout << "Readrate !" << app->rate << std::endl;
         DataNode tmpNode = (app -> dataQue).front();
         GstBuffer *buffer;
         buffer = gst_buffer_new ();
@@ -174,7 +174,7 @@ namespace ndn {
         gst_structure_get_fraction (str, "framerate", &num, &denom);
 //        gst_structure_remove_fields (str,"level", "profile", "height", "width", "framerate", "pixel-aspect-ratio", "parsed", NULL);
         video->rate = ceil(num/double(denom)); //FIX ME
-        std::cout << "video->rate " << video->rate << std::endl; 
+//        std::cout << "video->rate " << video->rate << std::endl; 
 
         g_object_set (G_OBJECT (video->appsrc), "caps", caps, NULL);
         gst_bin_add_many (GST_BIN (pipeline), video->appsrc, mqueue, video->decoder, video->sink, NULL);
@@ -198,7 +198,7 @@ namespace ndn {
         int samplerate;
         gst_structure_get_int (str_audio, "rate", &samplerate);
         audio->rate = samplerate/1000; //FIX ME
-        std::cout << "audio->rate " << audio->rate << std::endl; 
+//        std::cout << "audio->rate " << audio->rate << std::endl; 
       
         g_object_set (G_OBJECT (audio->appsrc), "caps", caps_audio, NULL);
         gst_bin_add_many (GST_BIN (pipeline), audio->appsrc, audio->decoder, audio->sink, NULL);

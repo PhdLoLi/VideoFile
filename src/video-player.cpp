@@ -61,7 +61,7 @@ namespace ndn {
     dataNode.length = bufferSize;
     dataNode.data = (guint8 *) bufferTmp;
     (app->dataQue).push_back(dataNode);
-    std::cout << "videoQueueSize " << (app->dataQue).size() <<std::endl;
+//    std::cout << "videoQueueSize " << (app->dataQue).size() <<std::endl;
     t_video ++;
 //    pthread_mutex_lock(&(app->count_mutex));
 //    if((app->dataQue).size() > 0)
@@ -82,7 +82,7 @@ namespace ndn {
     dataNode.length = bufferSize;
     dataNode.data = (guint8 *) bufferTmp;
     (app->dataQue).push_back(dataNode);
-    std::cout << "audioQueueSize " << (app->dataQue).size() <<std::endl;
+//    std::cout << "audioQueueSize " << (app->dataQue).size() <<std::endl;
     t_audio ++;
 //    pthread_mutex_lock(&(app->count_mutex));
 //    if((app->dataQue).size() > 0)
@@ -104,7 +104,7 @@ namespace ndn {
     int rc;
 //    rc = pthread_create(&thread, NULL, h264_capture_thread , (void *)va);
     rc = pthread_create(&thread, NULL, h264_appsrc_thread ,(void *)va);
-    std::cout << "h264_appsrc_init OK! " << std::endl;
+    std::cout << "Pipeline Initialisation DONE! " << std::endl;
   }
 /* Call Consume Here From the start*/
   void

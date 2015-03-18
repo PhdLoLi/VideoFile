@@ -78,7 +78,7 @@ namespace ndn{
 
       ndn::shared_ptr<Face> f1;
       sampleConsumer->getContextOption(FACE, f1);
-      std::cout << " Video Face = " << f1 << std::endl;
+//      std::cout << " Video Face = " << f1 << std::endl;
 
       sleeptime = 1000000;
     }else
@@ -87,7 +87,7 @@ namespace ndn{
                           (ConsumerContentCallback)bind(&ConsumerCallback::processPayloadAudio, con->cb, _1, _2, _3));
       ndn::shared_ptr<Face> f2;
       sampleConsumer->getContextOption(FACE, f2);
-      std::cout << " Audio Face = " << f2 << std::endl;
+//      std::cout << " Audio Face = " << f2 << std::endl;
       sleeptime = 0;
     }
         

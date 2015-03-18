@@ -206,6 +206,7 @@ private:
 //          if( samplenumber % 5000 == 0)
 //            sleep(5);
           sampleProducer->produce(sampleSuffix, (uint8_t *)map.data, map.size * sizeof(uint8_t));
+//          usleep(10000);
           samplenumber ++;
 //          if ( samplenumber > 250)
 //            break;

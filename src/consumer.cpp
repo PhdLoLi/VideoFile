@@ -83,10 +83,10 @@ namespace ndn {
       audioinfoConsumer->consume(Name("finalframe"));
 
       sleep(1); // because consume() is non-blocking
-      std::cout << "consume whole start!" <<std::endl;
+      std::cout << "Playing Start~! Enjoy!" <<std::endl;
 
       time_t time_start_0 = std::time(0);
-      std::cout << "Before consume " << time_start_0 << std::endl;
+//      std::cout << "Before consume " << time_start_0 << std::endl;
 
       int rc_audio;
       Consumer_Need audioData;
@@ -105,10 +105,10 @@ namespace ndn {
       rc_video = pthread_create(&thread_video, NULL, consume_thread , (void *)&videoData);
 
 //      cb_consumer.player.consume_whole(videoConsumer, audioConsumer);
-      time_t time_end_0  = std::time(0);
-      std::cout << "After consume " << time_end_0 << std::endl;
-      double seconds = difftime(time_end_0, time_start_0);
-      std::cout << seconds << " seconds have passed" << std::endl;
+//      time_t time_end_0  = std::time(0);
+//      std::cout << "After consume " << time_end_0 << std::endl;
+//      double seconds = difftime(time_end_0, time_start_0);
+//      std::cout << seconds << " seconds have passed" << std::endl;
 
       sleep(3000); // because consume() is non-blocking
       

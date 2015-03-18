@@ -32,7 +32,7 @@ namespace ndn {
   void
   ConsumerCallback::processPayload(Consumer& con, const uint8_t* buffer, size_t bufferSize)
   {
-    std::cout << "video times processPayload " << std::dec << times_video <<std::endl;
+//    std::cout << "video times processPayload " << std::dec << times_video <<std::endl;
 //    std::cout << "video bufferSize " << bufferSize <<std::endl;
 //    std::cout << "@buffer " << &buffer <<std::endl;
     player.h264_appsrc_data(buffer, bufferSize);
@@ -43,7 +43,7 @@ namespace ndn {
   void
   ConsumerCallback::processPayloadAudio(Consumer& con, const uint8_t* buffer, size_t bufferSize)
   {
-    std::cout << "audio times processPayload " << std::dec << times_audio <<std::endl;
+//    std::cout << "audio times processPayload " << std::dec << times_audio <<std::endl;
 //    std::cout << "audio bufferSize " << bufferSize <<std::endl;
 //    std::cout << "@buffer " << &buffer <<std::endl;
     player.h264_appsrc_data_audio(buffer, bufferSize);
@@ -57,7 +57,7 @@ namespace ndn {
     Name suffix;
     con.getContextOption(SUFFIX, suffix);
     std::string suffix_str = suffix.get(0).toUri();
-    std::cout << "suffix_str: " << suffix_str << std::endl;
+//    std::cout << "suffix_str: " << suffix_str << std::endl;
     if(suffix_str == "pipeline")
     {
       std::string streaminfo((char*) buffer);
@@ -66,7 +66,7 @@ namespace ndn {
     //  std::cout << "buffer " << buffer <<std::endl;
    //   std::cout << "streaminfo " << streaminfo <<std::endl;
     //  std::cout << "fileLength " << fileLength <<std::endl;
-      std::cout << "processStreaminfo " << streaminfo << std::endl;
+ //     std::cout << "processStreaminfo " << streaminfo << std::endl;
       player.get_streaminfo(streaminfo);
     }else
     {
@@ -80,11 +80,11 @@ namespace ndn {
     Name suffix;
     con.getContextOption(SUFFIX, suffix);
     std::string suffix_str = suffix.get(0).toUri();
-    std::cout << "suffix_str: " << suffix_str << std::endl;
+//    std::cout << "suffix_str: " << suffix_str << std::endl;
     if(suffix_str == "pipeline")
     {
       std::string streaminfo((char*) buffer);
-      std::cout << "processStreaminfo_audio " << streaminfo << std::endl;
+//      std::cout << "processStreaminfo_audio " << streaminfo << std::endl;
       player.get_streaminfo_audio(streaminfo);
     }else
     {
@@ -95,7 +95,7 @@ namespace ndn {
   void
   ConsumerCallback::processData(Consumer& con, const Data& data)
   {
-    std::cout << "DATA IN CNTX Name: " << data.getName() << "FinalBlockId: " <<data.getFinalBlockId() << std::endl;
+//    std::cout << "DATA IN CNTX Name: " << data.getName() << "FinalBlockId: " <<data.getFinalBlockId() << std::endl;
   }
   
   bool
@@ -111,7 +111,7 @@ namespace ndn {
   void
   ConsumerCallback::processLeavingInterest(Consumer& con, Interest& interest)
   {
-    std::cout << "LEAVES " << interest.toUri() << std::endl;
+///    std::cout << "LEAVES " << interest.toUri() << std::endl;
 //    std::cout << "LEAVES name " << interest.getName() << std::endl;
   }  
 
