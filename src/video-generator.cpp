@@ -289,9 +289,10 @@ namespace ndn {
     pro_video.filename = prefix + filename;
     pro_video.sink = sink.video;
     pro_video.name = "video";
-    rc_video = pthread_create(&thread_video, NULL, produce_thread , (void *)&pro_video);
+    produce_thread(&pro_video);
+//    rc_video = pthread_create(&thread_video, NULL, produce_thread , (void *)&pro_video);
  
-//    sleep(2);
+    sleep(2);
 
     std::cout << "audio thread start!" << std::endl;
     Producer_Need pro_audio;
@@ -300,7 +301,8 @@ namespace ndn {
     pro_audio.filename = prefix + filename;
     pro_audio.sink = sink.audio;
     pro_audio.name = "audio";
-    rc_audio = pthread_create(&thread_audio, NULL, produce_thread , (void *)&pro_audio);
+    produce_thread(&pro_audio);
+//    rc_audio = pthread_create(&thread_audio, NULL, produce_thread , (void *)&pro_audio);
 
 //    time_t time_start = std::time(0);
 //    size_t samplenumber = 0;
@@ -339,7 +341,7 @@ namespace ndn {
 //    double seconds = difftime(time_end, time_start);
 //    std::cout << seconds << " seconds have passed" << std::endl;
 
-    sleep(30000);
+//    sleep(30000);
 //    gst_element_set_state (pipeline, GST_STATE_NULL); 
     g_print ("Deleting pipeline\n"); 
     return;

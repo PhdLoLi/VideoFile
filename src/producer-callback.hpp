@@ -8,6 +8,8 @@
 #define PRODUCER_CALLBACK_HPP
 #include <ndn-cxx/contexts/producer-context.hpp>
 #include <ndn-cxx/contexts/application-nack.hpp>
+#include <boost/asio.hpp>
+
 namespace ndn {
 // Additional nested namespace could be used to prevent/limit name contentions
   class ProducerCallback
@@ -30,9 +32,21 @@ namespace ndn {
     void
     processOutgoingData(Producer& pro, const Data& data)
     {
-      std::cout << "OutgoingData " << data.getName() << std::endl;
+      count ++;
+      //Send data
+      boost::system::error_code ec;
+      socket->write_some(boost::asio::buffer(data.wireEncode().wire(), data.wireEncode().size()), ec);
+//      std::cout << "OutgoingData " << data.getName() << std::endl;
 //      std::cout << data.getFinalBlockId() << std::endl;
     }
+
+    void
+    processOutgoingList(Producer& pro, const Data& data)
+    {
+      std::cout << "OutgoingList " << data.getName() << std::endl;
+//      std::cout << data.getFinalBlockId() << std::endl;
+    }
+
     void
     processIncomingInterest(Producer& pro, const Interest& interest);
     
@@ -50,6 +64,10 @@ namespace ndn {
   
     std::string filepath;
     std::string prefix;
+    int count = 0;
+    boost::asio::io_service iosev;
+    boost::asio::ip::tcp::socket *socket;
+    
 
   private:
     Producer* m_producer;

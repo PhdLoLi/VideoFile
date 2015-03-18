@@ -54,22 +54,42 @@ namespace ndn {
   void
   ConsumerCallback::processStreaminfo(Consumer& con, const uint8_t* buffer, size_t bufferSize)
   {
-    std::string streaminfo((char*) buffer);
-  //  long fileLength = std::stol(content);
-  //  std::cout << "bufferSize " << bufferSize <<std::endl;
-  //  std::cout << "buffer " << buffer <<std::endl;
- //   std::cout << "streaminfo " << streaminfo <<std::endl;
-  //  std::cout << "fileLength " << fileLength <<std::endl;
-    std::cout << "processStreaminfo " << streaminfo << std::endl;
-    player.get_streaminfo(streaminfo);
+    Name suffix;
+    con.getContextOption(SUFFIX, suffix);
+    std::string suffix_str = suffix.get(0).toUri();
+    std::cout << "suffix_str: " << suffix_str << std::endl;
+    if(suffix_str == "pipeline")
+    {
+      std::string streaminfo((char*) buffer);
+    //  long fileLength = std::stol(content);
+    //  std::cout << "bufferSize " << bufferSize <<std::endl;
+    //  std::cout << "buffer " << buffer <<std::endl;
+   //   std::cout << "streaminfo " << streaminfo <<std::endl;
+    //  std::cout << "fileLength " << fileLength <<std::endl;
+      std::cout << "processStreaminfo " << streaminfo << std::endl;
+      player.get_streaminfo(streaminfo);
+    }else
+    {
+      finalframe = atoi((char*) buffer); 
+    }
   }
 
   void
   ConsumerCallback::processStreaminfoAudio(Consumer& con, const uint8_t* buffer, size_t bufferSize)
   {
-    std::string streaminfo((char*) buffer);
-    std::cout << "processStreaminfo_audio " << streaminfo << std::endl;
-    player.get_streaminfo_audio(streaminfo);
+    Name suffix;
+    con.getContextOption(SUFFIX, suffix);
+    std::string suffix_str = suffix.get(0).toUri();
+    std::cout << "suffix_str: " << suffix_str << std::endl;
+    if(suffix_str == "pipeline")
+    {
+      std::string streaminfo((char*) buffer);
+      std::cout << "processStreaminfo_audio " << streaminfo << std::endl;
+      player.get_streaminfo_audio(streaminfo);
+    }else
+    {
+      finalframe = atoi((char*) buffer); 
+    }
   }
 
   void

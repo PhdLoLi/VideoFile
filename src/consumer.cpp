@@ -68,7 +68,8 @@ namespace ndn {
       videoinfoConsumer->setContextOption(CONTENT_RETRIEVED, 
         (ConsumerContentCallback)bind(&ConsumerCallback::processStreaminfo, &cb_consumer, _1, _2, _3));
 
-      videoinfoConsumer->consume(Name());
+      videoinfoConsumer->consume(Name("pipeline"));
+      videoinfoConsumer->consume(Name("finalframe"));
 
       Name audioinfoName(prefix + filename + "/audio/streaminfo");
       Consumer* audioinfoConsumer = new Consumer(audioinfoName, SDR);
@@ -78,7 +79,8 @@ namespace ndn {
       audioinfoConsumer->setContextOption(CONTENT_RETRIEVED, 
         (ConsumerContentCallback)bind(&ConsumerCallback::processStreaminfoAudio, &cb_consumer, _1, _2, _3));
 
-      audioinfoConsumer->consume(Name());
+      audioinfoConsumer->consume(Name("pipeline"));
+      audioinfoConsumer->consume(Name("finalframe"));
 
       sleep(1); // because consume() is non-blocking
       std::cout << "consume whole start!" <<std::endl;

@@ -65,6 +65,9 @@ namespace ndn{
     Name sampleName(con->filename + "/" + con->name + "/" + "content");
 
     Consumer* sampleConsumer = new Consumer(sampleName, RDR);
+
+    end = con->cb->finalframe;
+
     if(con->name == "video")
     {
 //      sampleConsumer->setContextOption(EMBEDDED_MANIFESTS, true);
@@ -77,7 +80,6 @@ namespace ndn{
       sampleConsumer->getContextOption(FACE, f1);
       std::cout << " Video Face = " << f1 << std::endl;
 
-      end = 1000000;
       sleeptime = 1000000;
     }else
     {
@@ -86,7 +88,6 @@ namespace ndn{
       ndn::shared_ptr<Face> f2;
       sampleConsumer->getContextOption(FACE, f2);
       std::cout << " Audio Face = " << f2 << std::endl;
-      end = 1000000;
       sleeptime = 0;
     }
         

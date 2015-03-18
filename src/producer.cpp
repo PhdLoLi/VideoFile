@@ -7,6 +7,7 @@
 
 #include "video-generator.hpp"
 #include <dirent.h>
+#include <fstream>
 //#include <iostream>
 // Enclosing code in ndn simplifies coding (can also use `using namespace ndn`)
 namespace ndn {
@@ -30,7 +31,7 @@ namespace ndn {
 //      listProducer->setContextOption(INTEREST_ENTER_CNTX,
 //                    (ProducerInterestCallback)bind(&ProducerCallback::generateList, &listCB, _1, _2));
       listProducer->setContextOption(DATA_LEAVE_CNTX,
-                    (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &listCB, _1, _2));
+                    (ProducerDataCallback)bind(&ProducerCallback::processOutgoingList, &listCB, _1, _2));
       listProducer->setContextOption(CACHE_MISS,
                     (ProducerInterestCallback)bind(&ProducerCallback::generateList, &listCB, _1, _2));
 

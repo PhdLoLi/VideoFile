@@ -104,7 +104,8 @@ namespace ndn {
       /* print all the files and directories within directory */
       while ((ent = readdir (dir)) != NULL) {
         filename = ent->d_name; 
-        if(filename[0] != "."[0])
+//        if(filename[0] != "."[0])
+        if(filename[0] != "."[0] && filename.size()>4 && filename.compare(filename.size()-4, 4, ".mp4") == 0)
         {
           filevec.push_back(filename);
           filelist += filename + "\n";

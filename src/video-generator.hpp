@@ -102,6 +102,7 @@ private:
       static void
       *produce_thread (void * threadData)
       {
+     
         Producer_Need *pro;
         pro = (Producer_Need *) threadData;
         GstCaps *caps;
@@ -116,6 +117,26 @@ private:
         ProducerCallback streaminfoCB;
         ProducerCallback sampleCB;
 
+        boost::asio::ip::tcp::endpoint ep(boost::asio::ip::address_v4::from_string("127.0.0.1"), 1000);
+        boost::system::error_code ec;
+
+        streaminfoCB.socket = new boost::asio::ip::tcp::socket(streaminfoCB.iosev);
+        streaminfoCB.socket->connect(ep,ec);
+     
+        if(ec)
+        {
+          std::cout << "error: " <<  boost::system::system_error(ec).what() << std::endl;
+        }else
+          std::cout << "Streaminfo Conneted to REPO!" << std::endl;
+
+        sampleCB.socket = new boost::asio::ip::tcp::socket(streaminfoCB.iosev);
+        sampleCB.socket->connect(ep,ec);
+     
+        if(ec)
+        {
+          std::cout << "error: " <<  boost::system::system_error(ec).what() << std::endl;
+        }else
+          std::cout << "Sample Conneted to REPO!" << std::endl;
         time_t time_start = std::time(0);
         size_t samplenumber = 0;
 
@@ -130,7 +151,7 @@ private:
         streaminfoProducer->setContextOption(DATA_LEAVE_CNTX,
             (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &streaminfoCB, _1, _2));
 
-        streaminfoProducer->setContextOption(REPO_PREFIX, repoPrefix);
+//        streaminfoProducer->setContextOption(REPO_PREFIX, repoPrefix);
 
 //        streaminfoProducer->attach();
 
@@ -151,7 +172,7 @@ private:
 //        sampleProducer->setContextOption(DATA_TO_SECURE,
 //                        (DataCallback)bind(&Signer::onPacket, &signer, _1));
         
-        sampleProducer->setContextOption(REPO_PREFIX, repoPrefix);
+//        sampleProducer->setContextOption(REPO_PREFIX, repoPrefix);
 
         sampleProducer->setContextOption(INTEREST_ENTER_CNTX,
                         (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &sampleCB, _1, _2));
@@ -171,7 +192,7 @@ private:
           {
             caps = gst_sample_get_caps(sample);
             streaminfo = gst_caps_to_string(caps);
-            Name streaminfoSuffix("");
+            Name streaminfoSuffix("pipeline");
             streaminfoProducer->produce(streaminfoSuffix, (uint8_t *)streaminfo.c_str(), streaminfo.size()+1);
             std::cout << "produce " << pro->name << " streaminfo OK" << streaminfo << std::endl;
             std::cout << "streaminfo size "<< streaminfo.size() + 1 << std::endl;
@@ -179,10 +200,11 @@ private:
           buffer = gst_sample_get_buffer (sample);
           gst_buffer_map (buffer, &map, GST_MAP_READ);
           Name sampleSuffix(std::to_string(samplenumber));
-          std::cout << pro->name << " sample number: "<< std::dec << samplenumber <<std::endl;
-          std::cout << pro->name <<" sample Size: "<< std::dec << map.size * sizeof(uint8_t) <<std::endl;
+//          std::cout << pro->name << " sample number: "<< std::dec << samplenumber <<std::endl;
+//          std::cout << pro->name <<" sample Size: "<< std::dec << map.size * sizeof(uint8_t) <<std::endl;
 
-//          if( samplenumber % 100 != 0)
+//          if( samplenumber % 5000 == 0)
+//            sleep(5);
           sampleProducer->produce(sampleSuffix, (uint8_t *)map.data, map.size * sizeof(uint8_t));
           samplenumber ++;
 //          if ( samplenumber > 250)
@@ -191,12 +213,17 @@ private:
             gst_sample_unref (sample);
           }while (sample != NULL);
 
+        std::string count_str = std::to_string(sampleCB.count);
+        streaminfoProducer->produce(Name("finalframe"), (uint8_t *)count_str.c_str(), count_str.size());
+        streaminfoCB.socket -> close();
+        sampleCB.socket -> close();
+
         time_t time_end = std::time(0);
         double seconds = difftime(time_end, time_start);
-        std::cout << pro->name <<" "<< seconds << " seconds have passed" << std::endl;
+        std::cout << pro->name <<" "<< seconds << " seconds have passed" << "Total Data packets: " << sampleCB.count << std::endl;
 
-        sleep(50000);
-        pthread_exit(NULL);
+//        sleep(50000);
+//        pthread_exit(NULL);
       }
 
       static void
