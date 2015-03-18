@@ -1,7 +1,7 @@
-NEXT-NDNVIDEO
+NEXT-NDNVIDEO -- Pre-recorded Streaming
 ----
 
-NDN Streaming Video Project based on Consumer/Producer API
+NDN Pre-recorded Streaming Video Project based on Consumer/Producer API
 
 For license information see LICENSE.
 
@@ -10,10 +10,13 @@ http://named-data.net/
 Description
 ----
 
-NDN-based Streaming Video Project using Consumer/Producer API. 
+NDN-based Pre-recorded Streaming Video Project using Consumer/Producer API. 
 
-The producer keeps capturing the video from the camera and the audio from the microphone then publishing/producing them frame by frame. 
-The consumer consumes the video and audio frame by frame, then play them back together.
+There are a lots of pre-recorded video file inside the producer. 
+The repo\_producer will publish all the video files frame by frame into Repo-ng.
+The list\_producer will publish the latest playing list every minute. 
+
+The consumer should first ask for the latest playing list, then chose one to play back. 
 
 Structure
 ----
@@ -24,12 +27,14 @@ The directory structure is as follows:
     * **src/** *-- source code*
     * **waf** *-- binary waf file*
     * **wscript** *-- waf instruction file*
+    * **repo-ng.config** *-- repo-ng config file, the default path is "/usr/local/etc/ndn/"*
     * **.waf-tools/** *-- additional waf tools*
     * **examples/** *-- no use now*
     * **tests/** *-- no use now*
     * **LICENSE**
     * **README.md**
-    * **INSTALL.md**
+    * **INSTALL.md*** 
+
 
 Building instructions
 ----
@@ -37,9 +42,11 @@ Please, see the [INSTALL.md](INSTALL.md) for build instructions.
 
 Usage
 ----
-Terminal 1 -- Publishing video & audio
+Terminal 1 for repo_producer -- Publishing video & audio to Repo-ng
+$ .build/repo_producer
+Terminal 2 for list_producer -- Publishing playing list
 $ .build/producer
-Terminal 2 -- Playing video & audio
+Terminal 3 -- Playing video & audio
 $ .build/consumer
 
 License
