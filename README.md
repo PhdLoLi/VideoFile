@@ -1,7 +1,7 @@
-NEXT-NDNVIDEO -- Pre-recorded Streaming
+NEXT-NDNVIDEO -- Pre-recorded Video Streaming
 ----
 
-NDN Pre-recorded Streaming Video Project based on Consumer/Producer API
+NDN Pre-recorded Video Streaming Project based on Consumer/Producer API
 
 For license information see LICENSE.
 
@@ -33,7 +33,7 @@ The directory structure is as follows:
     * **tests/** *-- no use now*
     * **LICENSE**
     * **README.md**
-    * **INSTALL.md*** 
+    * **INSTALL.md** 
 
 
 Building instructions
@@ -42,9 +42,9 @@ Please, see the [INSTALL.md](INSTALL.md) for build instructions.
 
 Usage
 ----
-Terminal 1 for repo_producer -- Publishing video & audio to Repo-ng
-$ .build/repo_producer
-Terminal 2 for list_producer -- Publishing playing list
+Terminal 1 for repo\_producer -- Publishing video & audio to Repo-ng
+$ .build/repo\_producer
+Terminal 2 for list\_producer -- Publishing playing list
 $ .build/producer
 Terminal 3 -- Playing video & audio
 $ .build/consumer
