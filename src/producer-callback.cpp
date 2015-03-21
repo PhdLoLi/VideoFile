@@ -111,7 +111,7 @@ namespace ndn {
           filevec.push_back(filename);
           filelist += filename + "\n";
           std::cout << i << " " << filename << std::endl;
-          i++ ;
+          i++;
         }
       }
       closedir (dir);
