@@ -214,7 +214,7 @@ private:
             gst_sample_unref (sample);
           }while (sample != NULL);
 
-        std::string count_str = std::to_string(sampleCB.count);
+        std::string count_str = std::to_string(samplenumber);
         streaminfoProducer->produce(Name("finalframe"), (uint8_t *)count_str.c_str(), count_str.size());
         streaminfoCB.socket -> close();
         sampleCB.socket -> close();

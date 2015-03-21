@@ -8,6 +8,8 @@
 #include "video-generator.hpp"
 #include <dirent.h>
 #include <streambuf>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
 //#include <iostream>
 // Enclosing code in ndn simplifies coding (can also use `using namespace ndn`)
 namespace ndn {
@@ -58,10 +60,15 @@ namespace ndn {
   {
     try {
       
-      std::string prefix = "/ndn/ucla/recordvideo/";
+      boost::property_tree::ptree pt;
+      boost::property_tree::ini_parser::read_ini("../config.ini", pt);
+      std::cout << "Video FilePath: " << pt.get<std::string>("video.path") << std::endl;
+      std::cout << "Video Prefix: " << pt.get<std::string>("video.prefix") << std::endl; 
+
+      std::string prefix = pt.get<std::string>("video.prefix");;
       VideoGenerator generator;
 
-      std::string filepath = "/Users/Lijing/Test";
+      std::string filepath = pt.get<std::string>("video.path");
       std::string videoFilename;
       std::string filelist;
       std::vector<std::string> filediff;
@@ -87,12 +94,12 @@ namespace ndn {
 
           std::ofstream myfile;
           myfile.open (filepath + "/config", std::ios::out | std::ios::app);
-          myfile << "\n" + videoFilename;
+          myfile << videoFilename + "\n";
           myfile.close();
 
-          filelist += "\n" + videoFilename;
+          filelist += videoFilename + "\n" ;
         }
-        std::cout << "file list after:\n " << filelist << std::endl;
+        std::cout << "\nfile list after:\n " << filelist << std::endl;
 
 //        filelist_new = filelist_old;
         sleep(60);

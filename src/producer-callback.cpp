@@ -102,6 +102,7 @@ namespace ndn {
    
     if ((dir = opendir (filepath.c_str())) != NULL) {
       /* print all the files and directories within directory */
+      int i = 0;
       while ((ent = readdir (dir)) != NULL) {
         filename = ent->d_name; 
 //        if(filename[0] != "."[0])
@@ -109,7 +110,8 @@ namespace ndn {
         {
           filevec.push_back(filename);
           filelist += filename + "\n";
-          std::cout << filename << std::endl;
+          std::cout << i << " " << filename << std::endl;
+          i++ ;
         }
       }
       closedir (dir);

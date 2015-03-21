@@ -8,6 +8,8 @@
 #include "video-generator.hpp"
 #include <dirent.h>
 #include <fstream>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
 //#include <iostream>
 // Enclosing code in ndn simplifies coding (can also use `using namespace ndn`)
 namespace ndn {
@@ -18,12 +20,17 @@ namespace ndn {
   main(int argc, char** argv)
   {
     try {
-      
+
+      boost::property_tree::ptree pt;
+      boost::property_tree::ini_parser::read_ini("../config.ini", pt);
+      std::cout << "Video FilePath: " << pt.get<std::string>("video.path") << std::endl;
+      std::cout << "Video Prefix: " << pt.get<std::string>("video.prefix") << std::endl; 
+
       Producer *listProducer;
       ProducerCallback listCB;
-      std::string prefix = "/ndn/ucla/recordvideo/";
+      std::string prefix = pt.get<std::string>("video.prefix");
 
-      listCB.filepath = "/Users/Lijing/Test";
+      listCB.filepath = pt.get<std::string>("video.path");
       listCB.prefix = prefix;
 
       listProducer = new Producer(prefix + "list");
@@ -41,6 +48,7 @@ namespace ndn {
 
       while(1)
       {
+        std::cout << "Video Files List: " << std::endl;
         filelist = listCB.getFilename(); 
         uint64_t timestamp = toUnixTimestamp(ndn::time::system_clock::now()).count();
         std::string timestamp_str = std::to_string(timestamp);

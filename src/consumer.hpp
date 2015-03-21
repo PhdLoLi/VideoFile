@@ -66,8 +66,6 @@ namespace ndn{
 
     Consumer* sampleConsumer = new Consumer(sampleName, RDR);
 
-    end = con->cb->finalframe;
-
     if(con->name == "video")
     {
 //      sampleConsumer->setContextOption(EMBEDDED_MANIFESTS, true);
@@ -80,7 +78,8 @@ namespace ndn{
       sampleConsumer->getContextOption(FACE, f1);
 //      std::cout << " Video Face = " << f1 << std::endl;
 
-      sleeptime = 1000000;
+      end = con->cb->finalframe_video;
+      sleeptime = 3;
     }else
     {
       sampleConsumer->setContextOption(CONTENT_RETRIEVED, 
@@ -89,6 +88,7 @@ namespace ndn{
       sampleConsumer->getContextOption(FACE, f2);
 //      std::cout << " Audio Face = " << f2 << std::endl;
       sleeptime = 0;
+      end = con->cb->finalframe_audio;
     }
         
     sampleConsumer->setContextOption(MUST_BE_FRESH_S, true);
@@ -111,7 +111,11 @@ namespace ndn{
     { 
       Name sampleSuffix(std::to_string(i));
       sampleConsumer->consume(sampleSuffix);
- //     usleep(sleeptime);
+//      if(i % 500 == 0)
+//      {
+//        std::cout << "Time Reached!" << i << std::endl;
+//        sleep(sleeptime);
+//      }
     }
     pthread_exit(NULL);
   }

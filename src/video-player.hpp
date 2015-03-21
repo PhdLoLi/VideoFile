@@ -154,8 +154,11 @@ namespace ndn {
         pipeline = gst_pipeline_new ("pipeline");
 
         mqueue = gst_element_factory_make("multiqueue", "multiqueue");
-//        g_object_set (G_OBJECT (mqueue), "max-size-time", 500000000, NULL);
-//        g_object_set (G_OBJECT (mqueue), "use-buffering", 1, NULL);
+        g_object_set (G_OBJECT (mqueue), "max-size-time", 2000000000, NULL);
+//        g_object_set (G_OBJECT (mqueue), "max-size-buffers", 0, NULL);
+        g_object_set (G_OBJECT (mqueue), "max-size-bytes", 100000, NULL);
+        g_object_set (G_OBJECT (mqueue), "use-buffering", 1, NULL);
+        g_object_set (G_OBJECT (mqueue), "sync-by-running-time", 1, NULL);
 
 
 /**********   Video Part **************/
