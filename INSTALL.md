@@ -6,7 +6,7 @@ Prerequisites
 These are prerequisites to build NEXT-NDNVIDEO.
 
 **Required:**
-* [NDN-CXX](https://github.com/named-data/ndn-cxx.git)
+* [ndn-cxx](https://github.com/named-data/ndn-cxx.git)
 * [NFD](https://github.com/named-data/NFD.git)
 * [consumer-producer-api](https://github.com/iliamo/Consumer-Producer-API)
 * [repo-ng](https://github.com/named-data/repo-ng.git)
@@ -16,10 +16,10 @@ These are prerequisites to build NEXT-NDNVIDEO.
 Prerequisites build instructions
 ==
 
-MacOS build considerations
+Mac OS build considerations
 -
 
-NDN-CXX & NFD
+ndn-cxx & NFD
 --
 First install NDN-CXX, then install NFD, all from the source.
 
