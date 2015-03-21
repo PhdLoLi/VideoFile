@@ -42,16 +42,22 @@ Building instructions
 ----
 Please, see the [INSTALL.md](INSTALL.md) for build instructions.
 
-Usage
-----
+Config
+--
+- You should first set the "path" and "prefix" value in the config.ini
+    - The "path" stands for the path of video files(producer part)
+    - The "prefix" stands for the routable ndn prefix
+
+Run
+--
 Please keep NFD and Repo-ng Running.
 
-- Terminal 1 for repo\_producer -- Publishing video & audio to Repo-ng
+- Terminal 1 for repo\_producer -- Firstly, Publishing video & audio to Repo-ng
 <pre>
 $ .build/repo_producer
 </pre>
 
-- Terminal 2 for list\_producer -- Publishing playing list
+- Terminal 2 for list\_producer -- Secondely, Publishing playing list
 <pre>
 $ .build/producer
 </pre>
