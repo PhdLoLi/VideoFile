@@ -45,7 +45,7 @@ Please, see the [INSTALL.md](INSTALL.md) for build instructions.
 Config
 --
 - You should first set the "path" and "prefix" value in the config.ini
-    - The "path" stands for the path of video files(producer part)
+    - The "path" stands for the path of video files(producer part), we only support MP4 format. Please add some mp4 files into this path, when you run repo\_producer, these video files will be published into repo. You can add new file into this path, just keep repo\_producer running, it will publish the new-added file automatically.
     - The "prefix" stands for the routable ndn prefix
 
 Run
