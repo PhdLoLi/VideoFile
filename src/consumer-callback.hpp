@@ -74,7 +74,8 @@ namespace ndn {
     boost::condition_variable cond;
     boost::mutex mut;
     bool data_ready = 0;
-    int finalframe;
+    int finalframe_video;
+    int finalframe_audio;
   };
 
 } // namespace ndn

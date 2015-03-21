@@ -70,7 +70,8 @@ namespace ndn {
       player.get_streaminfo(streaminfo);
     }else
     {
-      finalframe = atoi((char*) buffer); 
+      finalframe_video = atoi((char*) buffer); 
+      std::cout << "video finalframe " << finalframe_video << std::endl;
     }
   }
 
@@ -88,7 +89,8 @@ namespace ndn {
       player.get_streaminfo_audio(streaminfo);
     }else
     {
-      finalframe = atoi((char*) buffer); 
+      finalframe_audio = atoi((char*) buffer); 
+      std::cout << "audio finalframe " << finalframe_audio << std::endl;
     }
   }
 
