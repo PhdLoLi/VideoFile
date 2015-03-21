@@ -7,6 +7,8 @@
 
 #include "consumer.hpp"
 #include <boost/thread/thread.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
 
 // Enclosing code in ndn simplifies coding (can also use `using namespace ndn`)
 namespace ndn {
@@ -17,7 +19,10 @@ namespace ndn {
   {
     try {
   
-  		std::string prefix = "/ndn/ucla/recordvideo/";
+      boost::property_tree::ptree pt;
+      boost::property_tree::ini_parser::read_ini("../config.ini", pt);
+
+  		std::string prefix = pt.get<std::string>("video.prefix");
       std::string filename ="";
       ConsumerCallback cb_consumer;
 
