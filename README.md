@@ -44,9 +44,11 @@ Please, see the [INSTALL.md](INSTALL.md) for build instructions.
 
 Usage
 ----
+Please keep NFD and Repo-ng Running.
+
 - Terminal 1 for repo\_producer -- Publishing video & audio to Repo-ng
 <pre>
-$ .build/repo\_producer
+$ .build/repo_producer
 </pre>
 
 - Terminal 2 for list\_producer -- Publishing playing list
