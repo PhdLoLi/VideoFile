@@ -8,7 +8,7 @@ These are prerequisites to build NEXT-NDNVIDEO.
 **Required:**
 * [NDN-CXX](https://github.com/named-data/ndn-cxx.git)
 * [NFD](https://github.com/named-data/NFD.git)
-* [consumer-producer-api](http://git.irl.cs.ucla.edu/ndn/consumer-producer-api)
+* [consumer-producer-api](https://github.com/iliamo/Consumer-Producer-API)
 * [repo-ng](https://github.com/named-data/repo-ng.git)
 * [gstreamer-1.0](http://gstreamer.freedesktop.org/data/pkg/osx/1.4.3/)
 * [boost](http://www.boost.org/)
