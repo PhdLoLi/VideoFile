@@ -73,7 +73,7 @@ namespace ndn {
     std::vector<std::string> list;
     boost::condition_variable cond;
     boost::mutex mut;
-    bool data_ready = 0;
+    bool data_ready;
     int finalframe_video;
     int finalframe_audio;
   };

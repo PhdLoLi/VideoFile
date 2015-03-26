@@ -24,6 +24,7 @@ namespace ndn {
 
   ConsumerCallback::ConsumerCallback()
   {
+    data_ready = false;
 //    std::cout << "Construction" << std::endl;
 //    player.playbin_appsrc_init();
 //    std::cout << "Construction Over" << std::endl;
