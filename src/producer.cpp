@@ -35,8 +35,8 @@ namespace ndn {
 
       listProducer = new Producer(prefix + "list");
       listCB.setProducer(listProducer); // needed for some callback functionality
-//      listProducer->setContextOption(INTEREST_ENTER_CNTX,
-//                    (ProducerInterestCallback)bind(&ProducerCallback::generateList, &listCB, _1, _2));
+      listProducer->setContextOption(INTEREST_ENTER_CNTX,
+                    (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &listCB, _1, _2));
       listProducer->setContextOption(DATA_LEAVE_CNTX,
                     (ProducerDataCallback)bind(&ProducerCallback::processOutgoingList, &listCB, _1, _2));
       listProducer->setContextOption(CACHE_MISS,

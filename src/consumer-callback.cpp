@@ -98,7 +98,7 @@ namespace ndn {
   void
   ConsumerCallback::processData(Consumer& con, const Data& data)
   {
-//    std::cout << "DATA IN CNTX Name: " << data.getName() << "FinalBlockId: " <<data.getFinalBlockId() << std::endl;
+    std::cout << "DATA IN CNTX Name: " << data.getName() << "FinalBlockId: " <<data.getFinalBlockId() << std::endl;
   }
   
   bool
@@ -114,7 +114,7 @@ namespace ndn {
   void
   ConsumerCallback::processLeavingInterest(Consumer& con, Interest& interest)
   {
-///    std::cout << "LEAVES " << interest.toUri() << std::endl;
+    std::cout << "LEAVES " << interest.toUri() << std::endl;
 //    std::cout << "LEAVES name " << interest.getName() << std::endl;
   }  
 
