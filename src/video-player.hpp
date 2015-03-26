@@ -15,8 +15,8 @@
 #include <deque>
 #include <pthread.h>
 #include <unistd.h>
-#include <gst/app/gstappsrc.h>
-#include <gst/app/gstappsink.h>
+//#include <gst/app/gstappsrc.h>
+//#include <gst/app/gstappsink.h>
 #include <ndn-cxx/contexts/consumer-context.hpp>
 
 namespace ndn {
