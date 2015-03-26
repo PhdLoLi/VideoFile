@@ -70,7 +70,7 @@ namespace ndn {
   
     std::string filepath;
     std::string prefix;
-    int count = 0;
+    int count;
     boost::asio::io_service iosev;
     boost::asio::ip::tcp::socket *socket;
     

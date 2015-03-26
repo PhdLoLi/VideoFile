@@ -15,6 +15,7 @@ namespace ndn {
   
   ProducerCallback::ProducerCallback()
   {
+    count = 0;
   }
   
   void
