@@ -99,8 +99,8 @@ private:
  * Now use thread produce streaminfo & frames & samples seprately. 
  *
  */
-      static void
-      *produce_thread (void * threadData)
+      void
+      produce_thread (void * threadData)
       {
      
         Producer_Need *pro;
@@ -117,26 +117,26 @@ private:
         ProducerCallback streaminfoCB;
         ProducerCallback sampleCB;
 
-        boost::asio::ip::tcp::endpoint ep(boost::asio::ip::address_v4::from_string("127.0.0.1"), 1000);
-        boost::system::error_code ec;
+//        boost::asio::ip::tcp::endpoint ep(boost::asio::ip::address_v4::from_string("127.0.0.1"), 1000);
+//        boost::system::error_code ec;
 
-        streaminfoCB.socket = new boost::asio::ip::tcp::socket(streaminfoCB.iosev);
-        streaminfoCB.socket->connect(ep,ec);
+//        streaminfoCB.socket = new boost::asio::ip::tcp::socket(streaminfoCB.iosev);
+//        streaminfoCB.socket->connect(ep,ec);
      
-        if(ec)
-        {
-          std::cout << "error: " <<  boost::system::system_error(ec).what() << std::endl;
-        }else
-          std::cout << "Streaminfo Conneted to REPO!" << std::endl;
+//        if(ec)
+//        {
+//          std::cout << "error: " <<  boost::system::system_error(ec).what() << std::endl;
+//        }else
+//          std::cout << "Streaminfo Conneted to REPO!" << std::endl;
 
-        sampleCB.socket = new boost::asio::ip::tcp::socket(streaminfoCB.iosev);
-        sampleCB.socket->connect(ep,ec);
+//        sampleCB.socket = new boost::asio::ip::tcp::socket(streaminfoCB.iosev);
+//        sampleCB.socket->connect(ep,ec);
      
-        if(ec)
-        {
-          std::cout << "error: " <<  boost::system::system_error(ec).what() << std::endl;
-        }else
-          std::cout << "Sample Conneted to REPO!" << std::endl;
+//        if(ec)
+//        {
+//          std::cout << "error: " <<  boost::system::system_error(ec).what() << std::endl;
+//        }else
+//          std::cout << "Sample Conneted to REPO!" << std::endl;
         time_t time_start = std::time(0);
         size_t samplenumber = 0;
 
@@ -146,6 +146,7 @@ private:
       /* streaminfoFrameProducer */
         streaminfoProducer = new Producer(videoName_streaminfo);
         streaminfoCB.setProducer(streaminfoProducer); // needed for some callback functionality
+        streaminfoProducer->setContextOption(LOCAL_REPO, true);
         streaminfoProducer->setContextOption(INTEREST_ENTER_CNTX,
                       (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &streaminfoCB, _1, _2));
         streaminfoProducer->setContextOption(DATA_LEAVE_CNTX,
@@ -174,6 +175,7 @@ private:
         
 //        sampleProducer->setContextOption(REPO_PREFIX, repoPrefix);
 
+        sampleProducer->setContextOption(LOCAL_REPO, true);
         sampleProducer->setContextOption(INTEREST_ENTER_CNTX,
                         (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &sampleCB, _1, _2));
         sampleProducer->setContextOption(DATA_LEAVE_CNTX,
@@ -216,15 +218,15 @@ private:
 
         std::string count_str = std::to_string(samplenumber);
         streaminfoProducer->produce(Name("finalframe"), (uint8_t *)count_str.c_str(), count_str.size());
-        streaminfoCB.socket -> close();
-        sampleCB.socket -> close();
+//        streaminfoCB.socket -> close();
+//        sampleCB.socket -> close();
 
         time_t time_end = std::time(0);
         double seconds = difftime(time_end, time_start);
         std::cout << pro->name <<" "<< seconds << " seconds have passed" << "Total Data packets: " << sampleCB.count << std::endl;
 
 //        sleep(50000);
-//        pthread_exit(NULL);
+//       pthread_exit(NULL);
       }
 
       static void

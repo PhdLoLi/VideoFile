@@ -40,8 +40,8 @@ namespace ndn {
       std::cout << "OutgoingData " << data.getName() << std::endl;
       std::cout << "total number: " << count << std::endl; 
       //Send data
-      boost::system::error_code ec;
-      socket->write_some(boost::asio::buffer(data.wireEncode().wire(), data.wireEncode().size()), ec);
+//      boost::system::error_code ec;
+//      socket->write_some(boost::asio::buffer(data.wireEncode().wire(), data.wireEncode().size()), ec);
 //      std::cout << "OutgoingData " << data.getName() << std::endl;
 //      std::cout << data.getFinalBlockId() << std::endl;
     }
@@ -71,8 +71,8 @@ namespace ndn {
     std::string filepath;
     std::string prefix;
     int count;
-    boost::asio::io_service iosev;
-    boost::asio::ip::tcp::socket *socket;
+//    boost::asio::io_service iosev;
+//    boost::asio::ip::tcp::socket *socket;
     
 
   private:

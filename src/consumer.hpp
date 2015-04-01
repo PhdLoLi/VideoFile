@@ -1,7 +1,6 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
- * Copyright (c) 2014 Regents of the University of California.
- *
+ * Copyright (c) 2014 Regents of the University of California.  *
  * @author Lijing Wang <phdloli@ucla.edu>
  */
 
@@ -92,7 +91,7 @@ namespace ndn{
     }
         
     sampleConsumer->setContextOption(MUST_BE_FRESH_S, true);
-    sampleConsumer->setContextOption(INTEREST_LIFETIME, 200);
+    sampleConsumer->setContextOption(INTEREST_LIFETIME, 300);
 
 //    sampleConsumer->setContextOption(INTEREST_RETX,5); //Retransmitted Attempted Time.
    // there is no need for other callback now
