@@ -186,25 +186,26 @@ namespace ndn {
 
     std::cout << "video thread start!" << std::endl;
     Producer_Need pro_video;
-//    pthread_t thread_video; 
-//    int rc_video;
+    pthread_t thread_video; 
+    int rc_video;
     pro_video.filename = prefix + filename;
     pro_video.sink = sink.video;
     pro_video.name = "video";
-    produce_thread(&pro_video);
-//    rc_video = pthread_create(&thread_video, NULL, produce_thread , (void *)&pro_video);
+//    produce_thread(&pro_video);
+    rc_video = pthread_create(&thread_video, NULL, produce_thread , (void *)&pro_video);
  
     sleep(2);
 
     std::cout << "audio thread start!" << std::endl;
     Producer_Need pro_audio;
-//    pthread_t thread_audio; 
-//    int rc_audio;
+    pthread_t thread_audio; 
+    int rc_audio;
     pro_audio.filename = prefix + filename;
     pro_audio.sink = sink.audio;
     pro_audio.name = "audio";
-    produce_thread(&pro_audio);
-//    rc_audio = pthread_create(&thread_audio, NULL, produce_thread , (void *)&pro_audio);
+//    produce_thread(&pro_audio);
+    rc_audio = pthread_create(&thread_audio, NULL, produce_thread , (void *)&pro_audio);
+    sleep(30000000);
 
 //    time_t time_start = std::time(0);
 //    size_t samplenumber = 0;

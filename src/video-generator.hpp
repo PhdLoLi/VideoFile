@@ -99,8 +99,8 @@ private:
  * Now use thread produce streaminfo & frames & samples seprately. 
  *
  */
-      void
-      produce_thread (void * threadData)
+      static void
+      *produce_thread (void * threadData)
       {
      
         Producer_Need *pro;
@@ -146,7 +146,7 @@ private:
       /* streaminfoFrameProducer */
         streaminfoProducer = new Producer(videoName_streaminfo);
         streaminfoCB.setProducer(streaminfoProducer); // needed for some callback functionality
-        streaminfoProducer->setContextOption(LOCAL_REPO, true);
+//        streaminfoProducer->setContextOption(LOCAL_REPO, true);
         streaminfoProducer->setContextOption(INTEREST_ENTER_CNTX,
                       (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &streaminfoCB, _1, _2));
         streaminfoProducer->setContextOption(DATA_LEAVE_CNTX,
@@ -154,7 +154,7 @@ private:
 
 //        streaminfoProducer->setContextOption(REPO_PREFIX, repoPrefix);
 
-//        streaminfoProducer->attach();
+        streaminfoProducer->attach();
 
         Signer signer;
         Name videoName_content(pro->filename + "/" + pro->name + "/content");
@@ -175,14 +175,14 @@ private:
         
 //        sampleProducer->setContextOption(REPO_PREFIX, repoPrefix);
 
-        sampleProducer->setContextOption(LOCAL_REPO, true);
+//        sampleProducer->setContextOption(LOCAL_REPO, true);
         sampleProducer->setContextOption(INTEREST_ENTER_CNTX,
                         (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &sampleCB, _1, _2));
         sampleProducer->setContextOption(DATA_LEAVE_CNTX,
             (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &sampleCB, _1, _2));
         sampleProducer->setContextOption(CACHE_MISS,
                           (ProducerInterestCallback)bind(&ProducerCallback::processInterest, &sampleCB, _1, _2));
-//        sampleProducer->attach();          
+        sampleProducer->attach();          
         
         do {
           g_signal_emit_by_name (pro->sink, "pull-sample", &sample);
@@ -225,8 +225,8 @@ private:
         double seconds = difftime(time_end, time_start);
         std::cout << pro->name <<" "<< seconds << " seconds have passed" << "Total Data packets: " << sampleCB.count << std::endl;
 
-//        sleep(50000);
-//       pthread_exit(NULL);
+        sleep(50000);
+       // pthread_exit(NULL);
       }
 
       static void

@@ -79,6 +79,7 @@ namespace ndn {
         {
           videoFilename = argv[1];
           generator.h264_generate_whole(prefix, filepath, videoFilename);
+          sleep(5000000);
         }
         return 0;
       }

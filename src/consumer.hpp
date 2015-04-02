@@ -102,6 +102,8 @@ namespace ndn{
                               (ConsumerInterestCallback)bind(&ConsumerCallback::processLeavingInterest, con->cb, _1, _2));
     sampleConsumer->setContextOption(INTEREST_RETRANSMIT, 
                               (ConsumerInterestCallback)bind(&ConsumerCallback::onRetx, con->cb, _1, _2));
+    sampleConsumer->setContextOption(INTEREST_EXPIRED, 
+                              (ConsumerInterestCallback)bind(&ConsumerCallback::onExpr, con->cb, _1, _2));
     sampleConsumer->setContextOption(DATA_ENTER_CNTX, 
                               (ConsumerDataCallback)bind(&ConsumerCallback::processData, con->cb, _1, _2));
 

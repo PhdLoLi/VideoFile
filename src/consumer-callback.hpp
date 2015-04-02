@@ -52,10 +52,10 @@ namespace ndn {
 
 
     void
-    onRetx(Consumer& con, Interest& interest)
-    {
-      std::cout << "Retransmitted " << interest.getName() << std::endl;
-    }
+    onRetx(Consumer& con, Interest& interest);
+
+    void
+    onExpr(Consumer& con, Interest& interest);
 
     void
     processFile(Consumer& con, const uint8_t* buffer, size_t bufferSize)
@@ -76,6 +76,12 @@ namespace ndn {
     bool data_ready;
     int finalframe_video;
     int finalframe_audio;
+    gsize payload_v;
+    gsize payload_a;
+    gsize interest_s;
+    gsize interest_r;
+    gsize interest_retx;
+    gsize interest_expr;
   };
 
 } // namespace ndn

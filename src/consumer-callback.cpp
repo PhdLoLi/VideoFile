@@ -19,12 +19,19 @@ namespace ndn {
 
   int times_video = 0;
   int times_audio = 0;
-  time_t time_start;
-  time_t time_end;
+//  time_t time_start;
+//  time_t time_end;
 
   ConsumerCallback::ConsumerCallback()
   {
     data_ready = false;
+    payload_v = 0;
+    payload_a = 0;
+    interest_s = 0;
+    interest_r = 0;
+    interest_retx = 0;
+    interest_expr = 0;
+
 //    std::cout << "Construction" << std::endl;
 //    player.playbin_appsrc_init();
 //    std::cout << "Construction Over" << std::endl;
@@ -36,6 +43,7 @@ namespace ndn {
 //    std::cout << "video times processPayload " << std::dec << times_video <<std::endl;
 //    std::cout << "video bufferSize " << bufferSize <<std::endl;
 //    std::cout << "@buffer " << &buffer <<std::endl;
+    payload_v += bufferSize;
     player.h264_appsrc_data(buffer, bufferSize);
     times_video ++;
 //    std::cout << "processPayload video over " << std::endl;
@@ -47,6 +55,7 @@ namespace ndn {
 //    std::cout << "audio times processPayload " << std::dec << times_audio <<std::endl;
 //    std::cout << "audio bufferSize " << bufferSize <<std::endl;
 //    std::cout << "@buffer " << &buffer <<std::endl;
+    payload_a += bufferSize;
     player.h264_appsrc_data_audio(buffer, bufferSize);
     times_audio ++;
 //    std::cout << "processPayload audio over " << std::endl;
@@ -98,7 +107,8 @@ namespace ndn {
   void
   ConsumerCallback::processData(Consumer& con, const Data& data)
   {
-    std::cout << "DATA IN CNTX Name: " << data.getName() << "FinalBlockId: " <<data.getFinalBlockId() << std::endl;
+    interest_r++;
+//    std::cout << "DATA IN CNTX Name: " << data.getName() << "FinalBlockId: " <<data.getFinalBlockId() << std::endl;
   }
   
   bool
@@ -114,7 +124,8 @@ namespace ndn {
   void
   ConsumerCallback::processLeavingInterest(Consumer& con, Interest& interest)
   {
-    std::cout << "LEAVES " << interest.toUri() << std::endl;
+    interest_s ++;
+//    std::cout << "LEAVES " << interest.toUri() << std::endl;
 //    std::cout << "LEAVES name " << interest.getName() << std::endl;
   }  
 
@@ -134,4 +145,19 @@ namespace ndn {
     data_ready=true;
     cond.notify_one();
   }
+
+  void
+  ConsumerCallback::onRetx(Consumer& con, Interest& interest)
+  {
+    interest_retx ++;
+    std::cout << "Retransmitted " << interest.getName() << std::endl;
+  }
+
+  void
+  ConsumerCallback::onExpr(Consumer& con, Interest& interest)
+  {
+    interest_expr ++;
+    std::cout << "Expired " << interest.getName() << std::endl;
+  }
+
 } // namespace ndn
