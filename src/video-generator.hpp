@@ -226,7 +226,7 @@ private:
         std::cout << pro->name <<" "<< seconds << " seconds have passed" << "Total Data packets: " << sampleCB.count << std::endl;
 
         sleep(50000);
-       // pthread_exit(NULL);
+        pthread_exit(NULL);
       }
 
       static void

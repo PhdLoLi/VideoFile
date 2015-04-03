@@ -95,10 +95,18 @@ namespace ndn {
 //        std::cout << "Readrate !" << app->rate << std::endl;
         DataNode tmpNode = (app -> dataQue).front();
         GstBuffer *buffer;
-        buffer = gst_buffer_new ();
-        buffer = gst_buffer_new_wrapped (tmpNode.data, tmpNode.length);
-        g_signal_emit_by_name (app->appsrc, "push-buffer", buffer, &ret);
-        gst_buffer_unref (buffer);
+        
+//        buffer = gst_buffer_new_allocate (NULL, tmpNode.length, NULL);
+
+
+//        uint8_t* bufferTmp = new uint8_t[tmpNode.length];
+//        memcpy (bufferTmp, tmpNode.data, tmpNode.length);
+
+        buffer = gst_buffer_new();
+        buffer = gst_buffer_new_wrapped(tmpNode.data, tmpNode.length);
+        g_signal_emit_by_name(app->appsrc, "push-buffer", buffer, &ret);
+//  gst_buffer_unmap (buffer, &info);
+        gst_buffer_unref(buffer);
         (app -> dataQue).pop_front();
 
         if (ret != GST_FLOW_OK) {
@@ -220,8 +228,11 @@ namespace ndn {
         gst_object_unref (bus);
         /* play */
         gst_element_set_state (pipeline, GST_STATE_PLAYING);
+        std::cout << "start running" <<std::endl;
+
         g_main_loop_run (loop);
         
+        std::cout << "Never here" <<std::endl;
         /* clean up */
         gst_element_set_state (pipeline, GST_STATE_NULL);
         gst_object_unref (GST_OBJECT (pipeline));
