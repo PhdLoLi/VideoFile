@@ -146,7 +146,7 @@ private:
       /* streaminfoFrameProducer */
         streaminfoProducer = new Producer(videoName_streaminfo);
         streaminfoCB.setProducer(streaminfoProducer); // needed for some callback functionality
-//        streaminfoProducer->setContextOption(LOCAL_REPO, true);
+        streaminfoProducer->setContextOption(LOCAL_REPO, true);
         streaminfoProducer->setContextOption(INTEREST_ENTER_CNTX,
                       (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &streaminfoCB, _1, _2));
         streaminfoProducer->setContextOption(DATA_LEAVE_CNTX,
@@ -164,18 +164,18 @@ private:
         if(pro->name == "video")
         {
           std::cout << "I'm video~ "<<std::endl;
-          sampleProducer->setContextOption(SND_BUF_SIZE,100000);
+          sampleProducer->setContextOption(SND_BUF_SIZE,10000000);
 //          sampleProducer->setContextOption(EMBEDDED_MANIFESTS, true);
         }else
         {
-          sampleProducer->setContextOption(SND_BUF_SIZE,100000);
+          sampleProducer->setContextOption(SND_BUF_SIZE,10000000);
         }
 //        sampleProducer->setContextOption(DATA_TO_SECURE,
 //                        (DataCallback)bind(&Signer::onPacket, &signer, _1));
         
 //        sampleProducer->setContextOption(REPO_PREFIX, repoPrefix);
 
-//        sampleProducer->setContextOption(LOCAL_REPO, true);
+        sampleProducer->setContextOption(LOCAL_REPO, true);
         sampleProducer->setContextOption(INTEREST_ENTER_CNTX,
                         (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &sampleCB, _1, _2));
         sampleProducer->setContextOption(DATA_LEAVE_CNTX,

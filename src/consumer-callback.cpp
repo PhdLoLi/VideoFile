@@ -25,6 +25,8 @@ namespace ndn {
   ConsumerCallback::ConsumerCallback()
   {
     data_ready = false;
+    data_ready_payload_v = false;
+    data_ready_payload_a = false;
     payload_v = 0;
     payload_a = 0;
     interest_s = 0;
@@ -46,6 +48,10 @@ namespace ndn {
     payload_v += bufferSize;
     player.h264_appsrc_data(buffer, bufferSize);
     times_video ++;
+    boost::lock_guard<boost::mutex> lock(mut_payload_v);
+    data_ready_payload_v = true;
+    cond_payload_v.notify_all();
+//    data_ready_payload_v = false;
 //    std::cout << "processPayload video over " << std::endl;
   }
 
@@ -58,6 +64,10 @@ namespace ndn {
     payload_a += bufferSize;
     player.h264_appsrc_data_audio(buffer, bufferSize);
     times_audio ++;
+    boost::lock_guard<boost::mutex> lock(mut_payload_a);
+    data_ready_payload_a = true;
+    cond_payload_a.notify_all();
+//    data_ready_payload_a = false;
 //    std::cout << "processPayload audio over " << std::endl;
   }
   
@@ -108,7 +118,7 @@ namespace ndn {
   ConsumerCallback::processData(Consumer& con, const Data& data)
   {
     interest_r++;
-//    std::cout << "DATA IN CNTX Name: " << data.getName() << "FinalBlockId: " <<data.getFinalBlockId() << std::endl;
+    std::cout << "DATA IN CNTX Name: " << data.getName() << "FinalBlockId: " <<data.getFinalBlockId() << std::endl;
   }
   
   bool
@@ -125,7 +135,7 @@ namespace ndn {
   ConsumerCallback::processLeavingInterest(Consumer& con, Interest& interest)
   {
     interest_s ++;
-//    std::cout << "LEAVES " << interest.toUri() << std::endl;
+    std::cout << "LEAVES " << interest.toUri() << std::endl;
 //    std::cout << "LEAVES name " << interest.getName() << std::endl;
   }  
 

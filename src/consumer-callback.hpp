@@ -74,6 +74,15 @@ namespace ndn {
     boost::condition_variable cond;
     boost::mutex mut;
     bool data_ready;
+    boost::condition_variable cond_payload_v;
+    boost::mutex mut_payload_v;
+    bool data_ready_payload_v;
+    boost::condition_variable cond_payload_a;
+    boost::mutex mut_payload_a;
+    bool data_ready_payload_a;
+
+    int cur_frame_v;
+    int cur_frame_a;
     int finalframe_video;
     int finalframe_audio;
     gsize payload_v;

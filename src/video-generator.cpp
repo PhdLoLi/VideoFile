@@ -194,7 +194,7 @@ namespace ndn {
 //    produce_thread(&pro_video);
     rc_video = pthread_create(&thread_video, NULL, produce_thread , (void *)&pro_video);
  
-    sleep(2);
+    sleep(10);
 
     std::cout << "audio thread start!" << std::endl;
     Producer_Need pro_audio;
