@@ -15,8 +15,8 @@
 #include <deque>
 #include <pthread.h>
 #include <unistd.h>
-//#include <gst/app/gstappsrc.h>
-//#include <gst/app/gstappsink.h>
+#include <gst/app/gstappsrc.h>
+#include <gst/app/gstappsink.h>
 #include <ndn-cxx/contexts/consumer-context.hpp>
 
 namespace ndn {
@@ -72,7 +72,7 @@ namespace ndn {
 
       VideoAudio s_va;
 
-  /* PULL MODE USED */
+  /* PUSH MODE USED */
       static gboolean
       read_data (App * app)
       {
@@ -195,6 +195,8 @@ namespace ndn {
         /* setup appsrc */
         g_signal_connect (video->appsrc, "need-data", G_CALLBACK (start_feed), video);
         g_signal_connect (video->appsrc, "enough-data", G_CALLBACK (stop_feed), video);
+        g_object_set(G_OBJECT(video->appsrc), "max-bytes", 0, NULL);
+//        gst_app_src_set_max_bytes((GstAppSrc *)video->appsrc, 10000);
 /**********   Video Part Over**************/
 
 /******* Audio Part *********************/
@@ -219,6 +221,7 @@ namespace ndn {
         /* setup appsrc */
         g_signal_connect (audio->appsrc, "need-data", G_CALLBACK (start_feed), audio);
         g_signal_connect (audio->appsrc, "enough-data", G_CALLBACK (stop_feed), audio);
+        g_object_set(G_OBJECT(audio->appsrc), "max-bytes", 0, NULL);
 /*********Audio Part Over **************/        
 
 
