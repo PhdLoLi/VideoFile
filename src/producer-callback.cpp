@@ -55,7 +55,7 @@ namespace ndn {
   void
   ProducerCallback::processIncomingInterest(Producer& pro, const Interest& interest)
   {
-    std::cout << "processIncomingInterest " << interest.getName() << std::endl;
+    std::cout << "process Incoming Interest " << interest.getName() << std::endl;
   }
   
   bool
@@ -81,6 +81,7 @@ namespace ndn {
       pro.produce(timeSuffix, (uint8_t *)filelist.c_str(), filelist.size());
     }else if(key == "file")
     {
+      // NOT IMPLEMENTED YET
       std::string videoFilename = interest.getName().get(5).toUri();
 //      videoFilename = filepath + "/" + videoFilename;
       std::cout << "videoFilename" << videoFilename << std::endl;

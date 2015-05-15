@@ -2,7 +2,7 @@
 VERSION = '0.1'
 APPNAME = 'next-ndnvideo'
 
-from waflib import Build, Logs, Utils, Task, TaskGen, Configure
+from waflib import Build, Logs, Utils, Task, TaskGen, Configure, Options
 
 def options(opt):
     opt.load('compiler_c compiler_cxx gnu_dirs')
@@ -15,6 +15,8 @@ def options(opt):
 
     ropt.add_option('--with-examples', action='store_true', default=False, dest='with_examples',
                     help='''build examples''')
+
+    opt.add_option('-l', '--log', dest="log", default='', help='log level', action='store')
 
 def configure(conf):
     conf.load("compiler_c compiler_cxx gnu_dirs boost default-compiler-flags")
@@ -119,3 +121,21 @@ def build(bld):
 	  bld.recurse('examples')
 
     bld.install_files('${SYSCONFDIR}/ndn', 'next-ndnvideo.conf.sample')
+
+def _enable_log(conf):
+    if Options.options.log == 'trace':
+        Logs.pprint("PINK", "Log level set to trace")
+        conf.env.append_value("CFLAGS", "-DLOG_LEVEL=6")
+        conf.env.append_value("CXXFLAGS", "-DLOG_LEVEL=6")
+    elif Options.options.log == 'debug':
+        Logs.pprint("PINK", "Log level set to debug")
+        conf.env.append_value("CFLAGS", "-DLOG_LEVEL=5")
+        conf.env.append_value("CXXFLAGS", "-DLOG_LEVEL=5")
+    elif Options.options.log == 'info':
+        Logs.pprint("PINK", "Log level set to info")
+        conf.env.append_value("CFLAGS", "-DLOG_LEVEL=4")
+        conf.env.append_value("CXXFLAGS", "-DLOG_LEVEL=4")
+    elif Options.options.log == '':
+        pass
+    else:
+        Logs.pprint("PINK", "unsupported log level")

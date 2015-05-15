@@ -47,7 +47,7 @@ namespace ndn{
 
   struct Consumer_Need
   {
-    std::string filename;
+    Name prefix;
     std::string name;
     ConsumerCallback *cb;
   };
@@ -61,7 +61,8 @@ namespace ndn{
     int end;
     int sleeptime;
 
-    Name sampleName(con->filename + "/" + con->name + "/" + "content");
+    Name sampleName = con->prefix;
+    sampleName.append(con->name + "/" + "content");
 
     Consumer* sampleConsumer = new Consumer(sampleName, RDR);
 
@@ -78,7 +79,7 @@ namespace ndn{
 //      std::cout << " Video Face = " << f1 << std::endl;
 
       end = con->cb->finalframe_video;
-      sleeptime = 3;
+      sleeptime = 100;
     }else
     {
       sampleConsumer->setContextOption(CONTENT_RETRIEVED, 
@@ -86,7 +87,7 @@ namespace ndn{
       ndn::shared_ptr<Face> f2;
       sampleConsumer->getContextOption(FACE, f2);
 //      std::cout << " Audio Face = " << f2 << std::endl;
-      sleeptime = 0;
+      sleeptime = 100;
       end = con->cb->finalframe_audio;
     }
         
@@ -111,30 +112,31 @@ namespace ndn{
     for (int i=0; i<end; i++)
     { 
       Name sampleSuffix(std::to_string(i));
+      usleep(sleeptime); 
       sampleConsumer->consume(sampleSuffix);
-      if (con->name == "video") {
-        std::cout << "video frame number " << std::dec << i << std::endl;
-        con->cb->cur_frame_v = i;
-        boost::unique_lock<boost::mutex> lock(con->cb->mut_payload_v);
-        while(!con->cb->data_ready_payload_v)
-        {
-          std::cout << "I'm HERE! Video Start waiting" << std::endl;
-          con->cb->cond_payload_v.wait(lock);
-          std::cout << "I'm HERE! Video Over waiting" << std::endl;
-        }
-        con->cb->data_ready_payload_v = false;
-      } else {
-        std::cout << "audio frame number " << std::dec << i  << std::endl;
-        con->cb->cur_frame_a = i;
-        boost::unique_lock<boost::mutex> lock(con->cb->mut_payload_a);
-        while(!con->cb->data_ready_payload_a)
-        {
-          std::cout << "I'm HERE! Audio Start waiting" << std::endl;
-          con->cb->cond_payload_a.wait(lock);
-          std::cout << "I'm HERE! Audio Over waiting" << std::endl;
-        }
-        con->cb->data_ready_payload_a = false;
-      }
+//      if (con->name == "video") {
+//        std::cout << "video frame number " << std::dec << i << std::endl;
+//        con->cb->cur_frame_v = i;
+//        boost::unique_lock<boost::mutex> lock(con->cb->mut_payload_v);
+//        while(!con->cb->data_ready_payload_v)
+//        {
+//          std::cout << "I'm HERE! Video Start waiting" << std::endl;
+//          con->cb->cond_payload_v.wait(lock);
+//          std::cout << "I'm HERE! Video Over waiting" << std::endl;
+//        }
+//        con->cb->data_ready_payload_v = false;
+//      } else {
+//        std::cout << "audio frame number " << std::dec << i  << std::endl;
+//        con->cb->cur_frame_a = i;
+//        boost::unique_lock<boost::mutex> lock(con->cb->mut_payload_a);
+//        while(!con->cb->data_ready_payload_a)
+//        {
+//          std::cout << "I'm HERE! Audio Start waiting" << std::endl;
+//          con->cb->cond_payload_a.wait(lock);
+//          std::cout << "I'm HERE! Audio Over waiting" << std::endl;
+//        }
+//        con->cb->data_ready_payload_a = false;
+//      }
 //      if(i % 500 == 0)
 //      {
 //        std::cout << "Time Reached!" << i << std::endl;

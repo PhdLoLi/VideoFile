@@ -53,7 +53,7 @@ namespace ndn {
   		std::string prefix = pt.get<std::string>("video.prefix");
       std::string filename ="";
 
-      Name listName(prefix + "list");
+      Name listName(Name(prefix).append("playlist"));
       Consumer* listConsumer = new Consumer(listName, SDR);
       listConsumer->setContextOption(INTEREST_LIFETIME, 50);
       listConsumer->setContextOption(MUST_BE_FRESH_S, true);
@@ -94,8 +94,8 @@ namespace ndn {
 
       std::cout << "Asking For " << filename << std::endl;
      
-      Name videoinfoName(prefix + filename + "/video/streaminfo");
-      Consumer* videoinfoConsumer = new Consumer(videoinfoName, SDR);
+      Name videoinfoName(prefix);
+      Consumer* videoinfoConsumer = new Consumer(videoinfoName.append(filename + "/video/streaminfo"), SDR);
       videoinfoConsumer->setContextOption(MUST_BE_FRESH_S, true);
       videoinfoConsumer->setContextOption(INTEREST_LEAVE_CNTX, 
         (ConsumerInterestCallback)bind(&ConsumerCallback::processLeavingInterest, &cb_consumer, _1, _2));
@@ -105,8 +105,8 @@ namespace ndn {
       videoinfoConsumer->consume(Name("pipeline"));
       videoinfoConsumer->consume(Name("finalframe"));
 
-      Name audioinfoName(prefix + filename + "/audio/streaminfo");
-      Consumer* audioinfoConsumer = new Consumer(audioinfoName, SDR);
+      Name audioinfoName(prefix);
+      Consumer* audioinfoConsumer = new Consumer(audioinfoName.append(filename + "/audio/streaminfo"), SDR);
       audioinfoConsumer->setContextOption(MUST_BE_FRESH_S, true);
       audioinfoConsumer->setContextOption(INTEREST_LEAVE_CNTX, 
         (ConsumerInterestCallback)bind(&ConsumerCallback::processLeavingInterest, &cb_consumer, _1, _2));
@@ -124,7 +124,7 @@ namespace ndn {
 
       int rc_audio;
       Consumer_Need audioData;
-      audioData.filename = prefix + filename;
+      audioData.prefix = Name(prefix).append(filename);
       audioData.name = "audio";
       audioData.cb = &cb_consumer ;
       pthread_t thread_audio; 
@@ -135,7 +135,7 @@ namespace ndn {
 
       int rc_video;
       Consumer_Need videoData;
-      videoData.filename = prefix + filename;
+      videoData.prefix = Name(prefix).append(filename);
       videoData.name = "video";
       videoData.cb = &cb_consumer ;
       pthread_t thread_video; 

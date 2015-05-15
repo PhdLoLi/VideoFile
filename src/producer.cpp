@@ -33,7 +33,7 @@ namespace ndn {
       listCB.filepath = pt.get<std::string>("video.path");
       listCB.prefix = prefix;
 
-      listProducer = new Producer(prefix + "list");
+      listProducer = new Producer(Name(prefix).append("playlist"));
       listCB.setProducer(listProducer); // needed for some callback functionality
       listProducer->setContextOption(INTEREST_ENTER_CNTX,
                     (ProducerInterestCallback)bind(&ProducerCallback::processIncomingInterest, &listCB, _1, _2));
@@ -53,8 +53,8 @@ namespace ndn {
         uint64_t timestamp = toUnixTimestamp(ndn::time::system_clock::now()).count();
         std::string timestamp_str = std::to_string(timestamp);
         std::cout << "Timestamp: " << timestamp_str << std::endl;
-        Name timeSuffix("all/" + timestamp_str);
-        listProducer->produce(timeSuffix, (uint8_t *)filelist.c_str(), filelist.size());
+        Name timeSuffix("all");
+        listProducer->produce(timeSuffix.append(timestamp_str), (uint8_t *)filelist.c_str(), filelist.size());
         sleep(60);
       }
 

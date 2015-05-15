@@ -118,7 +118,7 @@ namespace ndn {
   ConsumerCallback::processData(Consumer& con, const Data& data)
   {
     interest_r++;
-    std::cout << "DATA IN CNTX Name: " << data.getName() << "FinalBlockId: " <<data.getFinalBlockId() << std::endl;
+//    std::cout << "DATA IN CNTX Name: " << data.getName() << "  FinalBlockId: " <<data.getFinalBlockId() << std::endl;
   }
   
   bool
@@ -135,7 +135,7 @@ namespace ndn {
   ConsumerCallback::processLeavingInterest(Consumer& con, Interest& interest)
   {
     interest_s ++;
-    std::cout << "LEAVES " << interest.toUri() << std::endl;
+//    std::cout << "LEAVES " << interest.toUri() << std::endl;
 //    std::cout << "LEAVES name " << interest.getName() << std::endl;
   }  
 
@@ -160,14 +160,14 @@ namespace ndn {
   ConsumerCallback::onRetx(Consumer& con, Interest& interest)
   {
     interest_retx ++;
-    std::cout << "Retransmitted " << interest.getName() << std::endl;
+//    std::cout << "Retransmitted " << interest.getName() << std::endl;
   }
 
   void
   ConsumerCallback::onExpr(Consumer& con, Interest& interest)
   {
     interest_expr ++;
-    std::cout << "Expired " << interest.getName() << std::endl;
+//    std::cout << "Expired " << interest.getName() << std::endl;
   }
 
 } // namespace ndn

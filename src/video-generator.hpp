@@ -90,7 +90,7 @@ private:
 //        Producer *streaminfoProducer;
 //        Producer *sampleProducer;
         std::string name;
-        std::string filename;
+        Name prefix;
 //        ProducerCallback cbProducer;
       };
 
@@ -141,8 +141,11 @@ private:
         size_t samplenumber = 0;
 
 //        ProducerCallback cb_producer;
-        std::cout << pro->filename + "/" + pro->name +  "/streaminfo" << std::endl;
-        Name videoName_streaminfo(pro->filename + "/" + pro->name +  "/streaminfo");
+//        std::cout << pro->filename + "/" + pro->name +  "/streaminfo" << std::endl;
+        
+        Name videoName_streaminfo = pro->prefix;
+        videoName_streaminfo.append(pro->name + "/streaminfo");
+
       /* streaminfoFrameProducer */
         streaminfoProducer = new Producer(videoName_streaminfo);
         streaminfoCB.setProducer(streaminfoProducer); // needed for some callback functionality
@@ -154,10 +157,12 @@ private:
 
 //        streaminfoProducer->setContextOption(REPO_PREFIX, repoPrefix);
 
-        streaminfoProducer->attach();
+//        streaminfoProducer->attach();
 
         Signer signer;
-        Name videoName_content(pro->filename + "/" + pro->name + "/content");
+        Name videoName_content = pro->prefix;
+        videoName_content.append(pro->name + "/content");
+
         sampleProducer = new Producer(videoName_content);
         sampleCB.setProducer(sampleProducer); // needed for some callback functionality
         sampleCB.setSampleNumber(&samplenumber);
@@ -182,7 +187,7 @@ private:
             (ProducerDataCallback)bind(&ProducerCallback::processOutgoingData, &sampleCB, _1, _2));
         sampleProducer->setContextOption(CACHE_MISS,
                           (ProducerInterestCallback)bind(&ProducerCallback::processInterest, &sampleCB, _1, _2));
-        sampleProducer->attach();          
+//        sampleProducer->attach();          
         
         do {
           g_signal_emit_by_name (pro->sink, "pull-sample", &sample);
@@ -225,8 +230,8 @@ private:
         double seconds = difftime(time_end, time_start);
         std::cout << pro->name <<" "<< seconds << " seconds have passed" << "Total Data packets: " << sampleCB.count << std::endl;
 
-        sleep(50000);
-        pthread_exit(NULL);
+//        sleep(50000);
+//        pthread_exit(NULL);
       }
 
       static void
