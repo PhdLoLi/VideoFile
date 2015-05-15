@@ -1,9 +1,9 @@
-NEXT-NDNVIDEO -- Pre-recorded Video Streaming Project based on Consumer/Producer API
+NDNtube -- Pre-recorded Video Streaming Project based on Consumer/Producer API
 ==
 
 Prerequisites
 ==
-These are prerequisites to build NEXT-NDNVIDEO.
+These are prerequisites to build NDNtube.
 
 **Required:**
 * [boost](http://www.boost.org/)
