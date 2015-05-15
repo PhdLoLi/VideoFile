@@ -1,4 +1,4 @@
-NEXT-NDNVIDEO -- Pre-recorded Video Streaming
+NDNtube -- Pre-recorded Video Streaming
 ----
 
 NDN Pre-recorded Video Streaming Project based on Consumer/Producer API
@@ -14,7 +14,7 @@ NDN-based Pre-recorded Streaming Video Project using Consumer/Producer API.
 
 
 - Producer
-    - The repo\_producer will publish all the video files frame by frame into Repo-ng.
+    - The repo\_producer will publish all the video files frame by frame and also stream info into Repo-ng.
     - The list\_producer will publish the latest playing list every minute. 
 
 - Consumer
